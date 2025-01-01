@@ -18,12 +18,37 @@ import type {
 import * as viemChains from "viem/chains";
 import { DeriveKeyProvider, TEEMode } from "@elizaos/plugin-tee";
 
+// Arthera Chain Configuration
+const arthera: Chain = {
+    id: 10242,
+    name: "Arthera",
+    rpcUrls: {
+        default: {
+            http: ["https://rpc.arthera.net"],
+        },
+    },
+    blockExplorers: {
+        default: {
+            url: "https://explorer.arthera.net",
+            name: "Arthera Explorer",
+        },
+    },
+    nativeCurrency: {
+        name: "Arthera",
+        symbol: "AA",
+        decimals: 18,
+    },
+};
+
 import type { SupportedChain } from "../types";
 
 export class WalletProvider {
     private currentChain: SupportedChain = "mainnet";
-    chains: Record<string, Chain> = { mainnet: viemChains.mainnet };
-    account: PrivateKeyAccount;
+    chains: Record<string, Chain> = {
+        mainnet: viemChains.mainnet,
+        arthera, // Add Arthera here
+    };
+    account!: PrivateKeyAccount;
 
     constructor(
         accountOrPrivateKey: PrivateKeyAccount | `0x${string}`,
@@ -50,27 +75,24 @@ export class WalletProvider {
     ): PublicClient<HttpTransport, Chain, Account | undefined> {
         const transport = this.createHttpTransport(chainName);
 
-        const publicClient = createPublicClient({
+        return createPublicClient({
             chain: this.chains[chainName],
             transport,
         });
-        return publicClient;
     }
 
     getWalletClient(chainName: SupportedChain): WalletClient {
         const transport = this.createHttpTransport(chainName);
 
-        const walletClient = createWalletClient({
+        return createWalletClient({
             chain: this.chains[chainName],
             transport,
             account: this.account,
         });
-
-        return walletClient;
     }
 
     getChainConfigs(chainName: SupportedChain): Chain {
-        const chain = viemChains[chainName];
+        const chain = this.chains[chainName];
 
         if (!chain?.id) {
             throw new Error("Invalid chain name");
@@ -184,8 +206,8 @@ const genChainsFromRuntime = (
     runtime: IAgentRuntime
 ): Record<string, Chain> => {
     const chainNames =
-        (runtime.character.settings.chains?.evm as SupportedChain[]) || [];
-    const chains = {};
+        (runtime.character.settings.chains?.evm as SupportedChain[]) ?? [];
+    const chains: Record<string, Chain> = {};
 
     chainNames.forEach((chainName) => {
         const rpcUrl = runtime.getSetting(
@@ -195,14 +217,8 @@ const genChainsFromRuntime = (
         chains[chainName] = chain;
     });
 
-    const mainnet_rpcurl = runtime.getSetting("EVM_PROVIDER_URL");
-    if (mainnet_rpcurl) {
-        const chain = WalletProvider.genChainFromName(
-            "mainnet",
-            mainnet_rpcurl
-        );
-        chains["mainnet"] = chain;
-    }
+    // Add Arthera manually
+    chains["arthera"] = arthera;
 
     return chains;
 };
@@ -211,6 +227,10 @@ export const initWalletProvider = async (runtime: IAgentRuntime) => {
     const teeMode = runtime.getSetting("TEE_MODE") || TEEMode.OFF;
 
     const chains = genChainsFromRuntime(runtime);
+
+    if (!chains["arthera"]) {
+        chains["arthera"] = arthera;
+    }
 
     if (teeMode !== TEEMode.OFF) {
         const walletSecretSalt = runtime.getSetting("WALLET_SECRET_SALT");
