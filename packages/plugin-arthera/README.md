@@ -1,7 +1,3 @@
-Here’s the updated `README.md` tailored for the **Arthera plugin** while keeping relevant sections focused on its functionality:
-
----
-
 # @elizaos/plugin-arthera
 
 This plugin provides actions and providers for interacting with the **Arthera blockchain**.

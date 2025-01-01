@@ -17,36 +17,13 @@ import type {
 } from "viem";
 import * as viemChains from "viem/chains";
 import { DeriveKeyProvider, TEEMode } from "@elizaos/plugin-tee";
-
-const arthera: Chain = {
-    id: 10242,
-    name: "Arthera",
-    rpcUrls: {
-        default: {
-            http: ["https://rpc.arthera.net"],
-        },
-    },
-    blockExplorers: {
-        default: {
-            url: "https://explorer.arthera.net",
-            name: "Arthera Explorer",
-        },
-    },
-    nativeCurrency: {
-        name: "Arthera",
-        symbol: "AA",
-        decimals: 18,
-    },
-};
-
 import type { SupportedChain } from "../types";
 
 export class WalletProvider {
-    private currentChain: SupportedChain = "mainnet";
+    private currentChain: SupportedChain = "arthera";
     chains: Record<string, Chain> = {
-        mainnet: viemChains.mainnet,
-        arthera,
-    };
+        arthera: viemChains.arthera,
+    }
     account!: PrivateKeyAccount; // Fixed initialization issue
 
     constructor(
@@ -214,10 +191,7 @@ const genChainsFromRuntime = (
         );
         const chain = WalletProvider.genChainFromName(chainName, rpcUrl);
         chains[chainName] = chain;
-    });
-
-    chains["arthera"] = arthera;
-
+    })
     return chains;
 };
 

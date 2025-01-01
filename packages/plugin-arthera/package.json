@@ -1,6 +1,6 @@
 {
     "name": "@elizaos/plugin-arthera",
-    "version": "0.1.0-alpha.1",
+    "version": "0.1.7-alpha.2",
     "main": "dist/index.js",
     "type": "module",
     "types": "dist/index.d.ts",
@@ -18,13 +18,5 @@
     },
     "peerDependencies": {
         "whatwg-url": "7.1.0"
-    },
-    "description": "ElizaOS plugin for interacting with the Arthera blockchain network",
-    "keywords": ["arthera", "blockchain", "plugin", "ElizaOS", "web3", "evm"],
-    "author": "Your Name <your.email@example.com>",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/your-repo/plugin-arthera.git"
     }
 }
