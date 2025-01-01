@@ -5,7 +5,7 @@ export const transferTemplate = `Given the recent messages and wallet informatio
 {{walletInfo}}
 
 Extract the following information about the requested transfer:
-- Chain to execute on (like in viem/chains)
+- Chain to execute on (must include "arthera" as a supported chain)
 - Amount to transfer: Must be a string representing the amount in AA (only number without coin symbol, e.g., "0.1")
 - Recipient address: Must be a valid Ethereum address starting with "0x"
 - Token symbol or address (if not native token): Optional, leave as null for AA transfers
@@ -14,7 +14,7 @@ Respond with a JSON markdown block containing only the extracted values. All fie
 
 \`\`\`json
 {
-    "fromChain": SUPPORTED_CHAINS,
+    "fromChain": "arthera" | SUPPORTED_CHAINS,
     "amount": string,
     "toAddress": string,
     "token": string | null
@@ -30,9 +30,9 @@ export const bridgeTemplate = `Given the recent messages and wallet information 
 
 Extract the following information about the requested token bridge:
 - Token symbol or address to bridge
-- Source chain
+- Source chain (must include "arthera" if bridging from or to Arthera)
 - Destination chain
-- Amount to bridge: Must be a string representing the amount in ether (only number without coin symbol, e.g., "0.1")
+- Amount to bridge: Must be a string representing the amount in ether or AA (only number without coin symbol, e.g., "0.1")
 - Destination address (if specified)
 
 Respond with a JSON markdown block containing only the extracted values:
@@ -40,8 +40,8 @@ Respond with a JSON markdown block containing only the extracted values:
 \`\`\`json
 {
     "token": string | null,
-    "fromChain": "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
-    "toChain": "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
+    "fromChain": "arthera" | "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
+    "toChain": "arthera" | "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
     "amount": string | null,
     "toAddress": string | null
 }
@@ -55,10 +55,10 @@ export const swapTemplate = `Given the recent messages and wallet information be
 {{walletInfo}}
 
 Extract the following information about the requested token swap:
-- Input token symbol or address (the token being sold)
+- Input token symbol or address (the token being sold, "AA" for native token transfers)
 - Output token symbol or address (the token being bought)
-- Amount to swap: Must be a string representing the amount in ether (only number without coin symbol, e.g., "0.1")
-- Chain to execute on
+- Amount to swap: Must be a string representing the amount in AA or other tokens (only number without coin symbol, e.g., "0.1")
+- Chain to execute on (must include "arthera" if swapping on Arthera)
 
 Respond with a JSON markdown block containing only the extracted values. Use null for any values that cannot be determined:
 
@@ -67,7 +67,7 @@ Respond with a JSON markdown block containing only the extracted values. Use nul
     "inputToken": string | null,
     "outputToken": string | null,
     "amount": string | null,
-    "chain": "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
+    "chain": "arthera" | "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
     "slippage": number | null
 }
 \`\`\`

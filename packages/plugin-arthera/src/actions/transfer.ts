@@ -28,6 +28,7 @@ export class TransferAction {
             params.data = "0x";
         }
 
+        // Switch to the correct chain
         this.walletProvider.switchChain(params.fromChain);
 
         const walletClient = this.walletProvider.getWalletClient(
@@ -36,32 +37,25 @@ export class TransferAction {
 
         try {
             const hash = await walletClient.sendTransaction({
-                account: walletClient.account,
+                account: walletClient.account!,
                 to: params.toAddress,
                 value: parseEther(params.amount),
                 data: params.data as Hex,
-                kzg: {
-                    blobToKzgCommitment: function (_: ByteArray): ByteArray {
-                        throw new Error("Function not implemented.");
-                    },
-                    computeBlobKzgProof: function (
-                        _blob: ByteArray,
-                        _commitment: ByteArray
-                    ): ByteArray {
-                        throw new Error("Function not implemented.");
-                    },
-                },
                 chain: undefined,
             });
 
-            return {
-                hash,
-                from: walletClient.account.address,
-                to: params.toAddress,
-                value: parseEther(params.amount),
-                data: params.data as Hex,
-            };
-        } catch (error) {
+            if (walletClient.account) {
+                return {
+                    hash,
+                    from: walletClient.account.address,
+                    to: params.toAddress,
+                    value: parseEther(params.amount),
+                    data: params.data as Hex,
+                };
+            } else {
+                throw new Error("Wallet client account is undefined");
+            }
+        } catch (error: any) {
             throw new Error(`Transfer failed: ${error.message}`);
         }
     }
@@ -94,10 +88,7 @@ const buildTransferDetails = async (
 
     if (!existingChain) {
         throw new Error(
-            "The chain " +
-                transferDetails.fromChain +
-                " not configured yet. Add the chain or choose one from configured: " +
-                chains.toString()
+            `The chain "${transferDetails.fromChain}" is not configured. Add the chain or choose one from: ${chains.join(", ")}`
         );
     }
 
@@ -110,10 +101,14 @@ export const transferAction = {
     handler: async (
         runtime: IAgentRuntime,
         _message: Memory,
-        state: State,
+        state: State | undefined, // Allow undefined state
         _options: any,
         callback?: HandlerCallback
     ) => {
+        if (!state) {
+            throw new Error("State is required for this action.");
+        }
+
         console.log("Transfer action handler called");
         const walletProvider = await initWalletProvider(runtime);
         const action = new TransferAction(walletProvider);
@@ -140,8 +135,8 @@ export const transferAction = {
                 });
             }
             return true;
-        } catch (error) {
-            console.error("Error during token transfer:", error);
+        } catch (error: any) {
+            console.error("Error during token transfer:", error.message);
             if (callback) {
                 callback({
                     text: `Error transferring tokens: ${error.message}`,

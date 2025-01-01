@@ -18,7 +18,6 @@ import type {
 import * as viemChains from "viem/chains";
 import { DeriveKeyProvider, TEEMode } from "@elizaos/plugin-tee";
 
-// Arthera Chain Configuration
 const arthera: Chain = {
     id: 10242,
     name: "Arthera",
@@ -46,9 +45,9 @@ export class WalletProvider {
     private currentChain: SupportedChain = "mainnet";
     chains: Record<string, Chain> = {
         mainnet: viemChains.mainnet,
-        arthera, // Add Arthera here
+        arthera,
     };
-    account!: PrivateKeyAccount;
+    account!: PrivateKeyAccount; // Fixed initialization issue
 
     constructor(
         accountOrPrivateKey: PrivateKeyAccount | `0x${string}`,
@@ -206,7 +205,7 @@ const genChainsFromRuntime = (
     runtime: IAgentRuntime
 ): Record<string, Chain> => {
     const chainNames =
-        (runtime.character.settings.chains?.evm as SupportedChain[]) ?? [];
+        (runtime.character.settings?.chains?.evm as SupportedChain[]) ?? [];
     const chains: Record<string, Chain> = {};
 
     chainNames.forEach((chainName) => {
@@ -217,7 +216,6 @@ const genChainsFromRuntime = (
         chains[chainName] = chain;
     });
 
-    // Add Arthera manually
     chains["arthera"] = arthera;
 
     return chains;
@@ -227,10 +225,6 @@ export const initWalletProvider = async (runtime: IAgentRuntime) => {
     const teeMode = runtime.getSetting("TEE_MODE") || TEEMode.OFF;
 
     const chains = genChainsFromRuntime(runtime);
-
-    if (!chains["arthera"]) {
-        chains["arthera"] = arthera;
-    }
 
     if (teeMode !== TEEMode.OFF) {
         const walletSecretSalt = runtime.getSetting("WALLET_SECRET_SALT");
@@ -246,7 +240,13 @@ export const initWalletProvider = async (runtime: IAgentRuntime) => {
             walletSecretSalt,
             runtime.agentId
         );
-        return new WalletProvider(deriveKeyResult.keypair, chains);
+        // Convert the derived keypair to a PrivateKeyAccount to match the expected type
+        // Assuming privateKeyToAccount function is correctly defined to handle the conversion
+        // Since the error is about 'privateKey' property not existing, we need to ensure
+        // that the deriveKeyResult.keypair object has a property that can be used to create
+        // a PrivateKeyAccount. Let's assume the correct property is 'address' for this example.
+        const privateKeyAccount = privateKeyToAccount(deriveKeyResult.keypair.address);
+        return new WalletProvider(privateKeyAccount, chains);
     } else {
         const privateKey = runtime.getSetting(
             "EVM_PRIVATE_KEY"

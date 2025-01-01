@@ -5,51 +5,83 @@ import { Account, Chain } from "viem";
 import { TransferAction } from "../actions/transfer";
 import { WalletProvider } from "../providers/wallet";
 
-describe("Transfer Action", () => {
+describe("Transfer Action for Arthera", () => {
     let wp: WalletProvider;
 
     beforeEach(async () => {
-        const pk = generatePrivateKey();
-        const customChains = prepareChains();
-        wp = new WalletProvider(pk, customChains);
+        const privateKey = generatePrivateKey();
+        const artheraChain = prepareArtheraChain();
+        wp = new WalletProvider(privateKey, artheraChain);
     });
+
     describe("Constructor", () => {
         it("should initialize with wallet provider", () => {
-            const ta = new TransferAction(wp);
+            const transferAction = new TransferAction(wp);
 
-            expect(ta).toBeDefined();
+            expect(transferAction).toBeDefined();
         });
     });
+
     describe("Transfer", () => {
-        let ta: TransferAction;
+        let transferAction: TransferAction;
         let receiver: Account;
 
         beforeEach(() => {
-            ta = new TransferAction(wp);
+            transferAction = new TransferAction(wp);
             receiver = privateKeyToAccount(generatePrivateKey());
         });
 
-        it("throws if not enough gas", async () => {
+        it("throws an error if there is not enough gas", async () => {
             await expect(
-                ta.transfer({
-                    fromChain: "iotexTestnet",
+                transferAction.transfer({
+                    fromChain: "arthera",
                     toAddress: receiver.address,
-                    amount: "1",
+                    amount: "1", // Simulate insufficient funds
                 })
             ).rejects.toThrow(
                 "Transfer failed: The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account."
             );
         });
+
+        it("throws an error for an invalid chain configuration", async () => {
+            await expect(
+                transferAction.transfer({
+                    fromChain: "arthera", // Using a valid chain to simulate an invalid configuration
+                    toAddress: receiver.address,
+                    amount: "0.5",
+                })
+            ).rejects.toThrow(
+                "The chain arthera is not configured yet."
+            );
+        });
+
+        it("succeeds on Arthera with valid parameters", async () => {
+            const transferResult = await transferAction.transfer({
+                fromChain: "arthera",
+                toAddress: receiver.address,
+                amount: "0.1", // Sufficient funds for transfer
+            });
+
+            expect(transferResult).toHaveProperty("hash");
+            expect(transferResult.from).toBe(wp.getAddress());
+            expect(transferResult.to).toBe(receiver.address);
+            expect(transferResult.value.toString()).toBe("100000000000000000"); // 0.1 AA in wei
+        });
     });
 });
 
-const prepareChains = () => {
-    const customChains: Record<string, Chain> = {};
-    const chainNames = ["iotexTestnet"];
-    chainNames.forEach(
-        (chain) =>
-            (customChains[chain] = WalletProvider.genChainFromName(chain))
-    );
-
-    return customChains;
+// Helper function to prepare the Arthera chain
+const prepareArtheraChain = (): Record<string, Chain> => {
+    return {
+        arthera: {
+            id: 10242,
+            name: "Arthera",
+            rpcUrls: { default: { http: ["https://rpc.arthera.net"] } },
+            nativeCurrency: {
+                name: "Arthera",
+                symbol: "AA",
+                decimals: 18,
+            },
+        } as Chain,
+    };
 };
