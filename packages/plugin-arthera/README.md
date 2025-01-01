@@ -89,8 +89,8 @@ The **Wallet Provider** initializes with the **first chain in the list** as the 
 Transfer native tokens on the same chain:
 
 ```typescript
-// Example: Transfer 1 ETH
-Transfer 1 ETH to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e
+// Example: Transfer 1 AA
+Transfer 1 AA to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e
 ```
 
 ### 2. Bridge
@@ -98,8 +98,8 @@ Transfer 1 ETH to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e
 Bridge tokens between different chains using LiFi:
 
 ```typescript
-// Example: Bridge ETH from Ethereum to Base
-Bridge 1 ETH from Ethereum to Base
+// Example: Bridge AA from Ethereum to Base
+Bridge 1 AA from Ethereum to Base
 ```
 
 ### 3. Swap
@@ -107,8 +107,8 @@ Bridge 1 ETH from Ethereum to Base
 Swap tokens on the same chain using LiFi:
 
 ```typescript
-// Example: Swap ETH for USDC
-Swap 1 ETH for USDC on Base
+// Example: Swap AA for USDC
+Swap 1 AA for USDC on Base
 ```
 
 ## Development

@@ -152,7 +152,7 @@ export const bridgeAction = {
             {
                 user: "user",
                 content: {
-                    text: "Bridge 1 ETH from Ethereum to Base",
+                    text: "Bridge 1 AA from Ethereum to Base",
                     action: "CROSS_CHAIN_TRANSFER",
                 },
             },

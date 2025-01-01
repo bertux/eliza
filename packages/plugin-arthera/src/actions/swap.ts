@@ -161,7 +161,7 @@ export const swapAction = {
             {
                 user: "user",
                 content: {
-                    text: "Swap 1 ETH for USDC on Base",
+                    text: "Swap 1 AA for USDC on Base",
                     action: "TOKEN_SWAP",
                 },
             },
