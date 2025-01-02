@@ -11,7 +11,7 @@ This plugin provides actions and providers for interacting with Arthera.
 By default, **Arthera** is enabled. To use it, simply add your private key to the `.env` file:
 
 ```env
-EVM_PRIVATE_KEY=your-private-key-here
+ARTHERA_PRIVATE_KEY=your-private-key-here
 ```
 
 ### Custom RPC URLs

@@ -173,9 +173,9 @@ const genChainsFromRuntime = (
 };
 
 export const initWalletProvider = (runtime: IAgentRuntime) => {
-    const privateKey = runtime.getSetting("EVM_PRIVATE_KEY");
+    const privateKey = runtime.getSetting("ARTHERA_PRIVATE_KEY");
     if (!privateKey) {
-        throw new Error("EVM_PRIVATE_KEY is missing");
+        throw new Error("ARTHERA_PRIVATE_KEY is missing");
     }
 
     const chains = genChainsFromRuntime(runtime);
