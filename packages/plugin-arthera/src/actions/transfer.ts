@@ -20,17 +20,17 @@ export class TransferAction {
     constructor(private walletProvider: WalletProvider) {}
 
     async transfer(params: TransferParams): Promise<Transaction> {
+        const walletClient = this.walletProvider.getWalletClient(
+            params.fromChain
+        );
+
         console.log(
-            `Transferring: ${params.amount} tokens to (${params.toAddress} on ${params.fromChain})`
+            `Transferring: ${params.amount} tokens from (${walletClient.account.address} to (${params.toAddress} on ${params.fromChain})`
         );
 
         if (!params.data) {
             params.data = "0x";
         }
-
-        const walletClient = this.walletProvider.getWalletClient(
-            params.fromChain
-        );
 
         try {
             const hash = await walletClient.sendTransaction({
