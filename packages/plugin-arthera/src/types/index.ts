@@ -60,15 +60,6 @@ export interface SwapParams {
     slippage?: number;
 }
 
-export interface BridgeParams {
-    fromChain: SupportedChain;
-    toChain: SupportedChain;
-    fromToken: Address;
-    toToken: Address;
-    amount: string;
-    toAddress?: Address;
-}
-
 // Plugin configuration
 export interface EvmPluginConfig {
     rpcUrl?: {

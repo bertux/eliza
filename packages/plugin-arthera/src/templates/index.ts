@@ -22,32 +22,6 @@ Respond with a JSON markdown block containing only the extracted values. All fie
 \`\`\`
 `;
 
-export const bridgeTemplate = `Given the recent messages and wallet information below:
-
-{{recentMessages}}
-
-{{walletInfo}}
-
-Extract the following information about the requested token bridge:
-- Token symbol or address to bridge
-- Source chain
-- Destination chain
-- Amount to bridge: Must be a string representing the amount in ether (only number without coin symbol, e.g., "0.1")
-- Destination address (if specified)
-
-Respond with a JSON markdown block containing only the extracted values:
-
-\`\`\`json
-{
-    "token": string | null,
-    "fromChain": "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
-    "toChain": "ethereum" | "abstract" | "base" | "sepolia" | "bsc" | "arbitrum" | "avalanche" | "polygon" | "optimism" | "cronos" | "gnosis" | "fantom" | "klaytn" | "celo" | "moonbeam" | "aurora" | "harmonyOne" | "moonriver" | "arbitrumNova" | "mantle" | "linea" | "scroll" | "filecoin" | "taiko" | "zksync" | "canto" | "alienx" | null,
-    "amount": string | null,
-    "toAddress": string | null
-}
-\`\`\`
-`;
-
 export const swapTemplate = `Given the recent messages and wallet information below:
 
 {{recentMessages}}
