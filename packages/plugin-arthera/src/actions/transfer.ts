@@ -28,8 +28,6 @@ export class TransferAction {
             params.data = "0x";
         }
 
-        this.walletProvider.switchChain(params.fromChain);
-
         const walletClient = this.walletProvider.getWalletClient(
             params.fromChain
         );
