@@ -1,10 +1,8 @@
-export * from "./actions/swap";
 export * from "./actions/transfer";
 export * from "./providers/wallet";
 export * from "./types";
 
 import type { Plugin } from "@elizaos/core";
-import { swapAction } from "./actions/swap";
 import { transferAction } from "./actions/transfer";
 import { evmWalletProvider } from "./providers/wallet";
 
@@ -14,7 +12,7 @@ export const evmPlugin: Plugin = {
     providers: [evmWalletProvider],
     evaluators: [],
     services: [],
-    actions: [transferAction, swapAction],
+    actions: [transferAction],
 };
 
 export default evmPlugin;
