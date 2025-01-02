@@ -53,35 +53,9 @@ export interface TransferParams {
 }
 
 // Plugin configuration
-export interface EvmPluginConfig {
+export interface ArtheraPluginConfig {
     rpcUrl?: {
         arthera?: string;
-        abstract?: string;
-        base?: string;
-        sepolia?: string;
-        bsc?: string;
-        arbitrum?: string;
-        avalanche?: string;
-        polygon?: string;
-        optimism?: string;
-        cronos?: string;
-        gnosis?: string;
-        fantom?: string;
-        klaytn?: string;
-        celo?: string;
-        moonbeam?: string;
-        aurora?: string;
-        harmonyOne?: string;
-        moonriver?: string;
-        arbitrumNova?: string;
-        mantle?: string;
-        linea?: string;
-        scroll?: string;
-        filecoin?: string;
-        taiko?: string;
-        zksync?: string;
-        canto?: string;
-        alienx?: string;
     };
     secrets?: {
         EVM_PRIVATE_KEY: string;

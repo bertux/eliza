@@ -1,6 +1,6 @@
 # `@elizaos/plugin-arthera`
 
-This plugin provides actions and providers for interacting with Arthera-compatible chains.
+This plugin provides actions and providers for interacting with Arthera mainnet.
 
 ---
 
@@ -33,7 +33,7 @@ ETHEREUM_PROVIDER_ARTHERA=https://rpc.arthera.net
 The **Wallet Provider** initializes with Arthera mainnet. It:
 
 - Provides the **context** of the currently connected address and its balance.
-- Creates **Public** and **Wallet clients** to interact with the supported chains.
+- Creates **Public** and **Wallet clients** to interact with the supported chain.
 - Allows adding chains dynamically at runtime.
 
 ---
@@ -51,7 +51,7 @@ Transfer tokens from one address to another on any Arthera-compatible chain. Jus
 **Example usage:**
 
 ```bash
-Transfer 1 AA to 0xRecipient on arbitrum.
+Transfer 1 AA to 0xRecipient on arthera.
 ```
 
 ---
