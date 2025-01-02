@@ -161,14 +161,14 @@ export const transferAction = {
             {
                 user: "assistant",
                 content: {
-                    text: "I'll help you transfer 1 ETH to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                    text: "I'll help you transfer 1 AA to 0x476e2651bf97de8a26e4a05a9c8e00a6efa1390c",
                     action: "SEND_TOKENS",
                 },
             },
             {
                 user: "user",
                 content: {
-                    text: "Transfer 1 ETH to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                    text: "Transfer 1 AA to 0x476e2651bf97de8a26e4a05a9c8e00a6efa1390c",
                     action: "SEND_TOKENS",
                 },
             },

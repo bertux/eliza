@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { mainnet, arthera, arbitrum, Chain } from "viem/chains";
+import { getEnvVariable } from "@elizaos/core";
 
 import { WalletProvider } from "../providers/wallet";
 
@@ -10,11 +11,14 @@ const customRpcUrls = {
 
 describe("Wallet provider", () => {
     let walletProvider: WalletProvider;
+    let walletProvider1: WalletProvider;
     let pk: `0x${string}`;
+    let pk1: `0x${string}`;
     const customChains: Record<string, Chain> = {};
 
     beforeAll(() => {
         pk = generatePrivateKey();
+        pk1 = getEnvVariable("EVM_PRIVATE_KEY") as `0x${string}`;
 
         const chainNames = ["arthera", "arbitrum"];
         chainNames.forEach(
@@ -27,10 +31,13 @@ describe("Wallet provider", () => {
         it("sets address", () => {
             const account = privateKeyToAccount(pk);
             const expectedAddress = account.address;
+            const expectedAddress1 = "0xe7e0E57AdE88226aC041Eba33D8dBaF2f351AEC0";
 
             walletProvider = new WalletProvider(pk);
+            walletProvider1 = new WalletProvider(pk1);
 
             expect(walletProvider.getAddress()).toEqual(expectedAddress);
+            expect(walletProvider1.getAddress()).toEqual(expectedAddress1);
         });
         it("sets default chain to ethereum mainnet", () => {
             walletProvider = new WalletProvider(pk);
@@ -168,10 +175,10 @@ describe("Wallet provider", () => {
             const initialChain = walletProvider.getCurrentChain().id;
             expect(initialChain).toEqual(arthera.id);
 
-            walletProvider.switchChain("arbitrum");
+            walletProvider.switchChain("arthera");
 
             const newChain = walletProvider.getCurrentChain().id;
-            expect(newChain).toEqual(arbitrum.id);
+            expect(newChain).toEqual(arthera.id);
         });
         it("adds chain", () => {
             const initialChains = walletProvider.chains;
@@ -180,7 +187,7 @@ describe("Wallet provider", () => {
             const base = WalletProvider.genChainFromName("base");
             walletProvider.addChain({ base });
             const newChains = walletProvider.chains;
-            expect(newChains.arbitrum.id).toEqual(arbitrum.id);
+            expect(newChains.base.id).toEqual(base.id);
         });
         it("gets chain configs", () => {
             const chain = walletProvider.getChainConfigs("arthera");

@@ -75,7 +75,7 @@ Transfer tokens from one address to another on any EVM-compatible chain. Just sp
 **Example usage:**
 
 ```bash
-Transfer 1 ETH to 0xRecipient on arbitrum.
+Transfer 1 AA to 0x476e2651bf97de8a26e4a05a9c8e00a6efa1390c on arthera.
 ```
 
 ---
