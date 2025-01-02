@@ -55,7 +55,7 @@ export interface TransferParams {
 // Plugin configuration
 export interface EvmPluginConfig {
     rpcUrl?: {
-        ethereum?: string;
+        arthera?: string;
         abstract?: string;
         base?: string;
         sepolia?: string;

@@ -1,6 +1,6 @@
 # `@elizaos/plugin-arthera`
 
-This plugin provides actions and providers for interacting with EVM-compatible chains.
+This plugin provides actions and providers for interacting with Arthera-compatible chains.
 
 ---
 
@@ -8,27 +8,11 @@ This plugin provides actions and providers for interacting with EVM-compatible c
 
 ### Default Setup
 
-By default, **Ethereum mainnet** is enabled. To use it, simply add your private key to the `.env` file:
+By default, **Arthera mainnet** is enabled. To use it, simply add your private key to the `.env` file:
 
 ```env
 EVM_PRIVATE_KEY=your-private-key-here
 ```
-
-### Adding Support for Other Chains
-
-To enable support for additional chains, add them to the character config like this:
-
-```json
-"settings": {
-    "chains": {
-        "evm": [
-            "base", "arbitrum", "iotex"
-        ]
-    }
-}
-```
-
-Note: The chain names must match those in the viem/chains.
 
 ### Custom RPC URLs
 
@@ -41,20 +25,12 @@ ETHEREUM_PROVIDER_<CHAIN_NAME>=https://your-custom-rpc-url
 **Example usage:**
 
 ```env
-ETHEREUM_PROVIDER_IOTEX=https://iotex-network.rpc.thirdweb.com
-```
-
-#### Custom RPC for Ethereum Mainnet
-
-To set a custom RPC URL for Ethereum mainnet, use:
-
-```env
-EVM_PROVIDER_URL=https://your-custom-mainnet-rpc-url
+ETHEREUM_PROVIDER_ARTHERA=https://rpc.arthera.net
 ```
 
 ## Provider
 
-The **Wallet Provider** initializes with the **first chain in the list** as the default (or Ethereum mainnet if none are added). It:
+The **Wallet Provider** initializes with Arthera mainnet. It:
 
 - Provides the **context** of the currently connected address and its balance.
 - Creates **Public** and **Wallet clients** to interact with the supported chains.
@@ -66,7 +42,7 @@ The **Wallet Provider** initializes with the **first chain in the list** as the 
 
 ### Transfer
 
-Transfer tokens from one address to another on any EVM-compatible chain. Just specify the:
+Transfer tokens from one address to another on any Arthera-compatible chain. Just specify the:
 
 - **Amount**
 - **Chain**

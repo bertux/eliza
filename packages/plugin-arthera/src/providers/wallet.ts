@@ -173,8 +173,7 @@ export class WalletProvider {
 const genChainsFromRuntime = (
     runtime: IAgentRuntime
 ): Record<string, Chain> => {
-    const chainNames =
-        (runtime.character.settings.chains?.evm as SupportedChain[]) || [];
+    const chainNames = ["arthera"];
     const chains = {};
 
     chainNames.forEach((chainName) => {
@@ -184,15 +183,6 @@ const genChainsFromRuntime = (
         const chain = WalletProvider.genChainFromName(chainName, rpcUrl);
         chains[chainName] = chain;
     });
-
-    const mainnet_rpcurl = runtime.getSetting("EVM_PROVIDER_URL");
-    if (mainnet_rpcurl) {
-        const chain = WalletProvider.genChainFromName(
-            "mainnet",
-            mainnet_rpcurl
-        );
-        chains["mainnet"] = chain;
-    }
 
     return chains;
 };
@@ -208,7 +198,7 @@ export const initWalletProvider = (runtime: IAgentRuntime) => {
     return new WalletProvider(privateKey as `0x${string}`, chains);
 };
 
-export const evmWalletProvider: Provider = {
+export const artheraWalletProvider: Provider = {
     async get(
         runtime: IAgentRuntime,
         _message: Memory,
@@ -219,9 +209,9 @@ export const evmWalletProvider: Provider = {
             const address = walletProvider.getAddress();
             const balance = await walletProvider.getWalletBalance();
             const chain = walletProvider.getCurrentChain();
-            return `EVM Wallet Address: ${address}\nBalance: ${balance} ${chain.nativeCurrency.symbol}\nChain ID: ${chain.id}, Name: ${chain.name}`;
+            return `Arthera Wallet Address: ${address}\nBalance: ${balance} ${chain.nativeCurrency.symbol}\nChain ID: ${chain.id}, Name: ${chain.name}`;
         } catch (error) {
-            console.error("Error in EVM wallet provider:", error);
+            console.error("Error in Arthera wallet provider:", error);
             return null;
         }
     },

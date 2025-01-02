@@ -34,7 +34,7 @@ describe("Wallet provider", () => {
 
             expect(walletProvider.getAddress()).toEqual(expectedAddress);
         });
-        it("sets default chain to ethereum mainnet", () => {
+        it("sets default chain to arthera mainnet", () => {
             walletProvider = new WalletProvider(pk);
 
             expect(walletProvider.chains.mainnet.id).toEqual(mainnet.id);
