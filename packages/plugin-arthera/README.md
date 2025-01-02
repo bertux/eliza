@@ -1,6 +1,6 @@
 # `@elizaos/plugin-arthera`
 
-This plugin provides actions and providers for interacting with Arthera mainnet.
+This plugin provides actions and providers for interacting with Arthera.
 
 ---
 
@@ -8,7 +8,7 @@ This plugin provides actions and providers for interacting with Arthera mainnet.
 
 ### Default Setup
 
-By default, **Arthera mainnet** is enabled. To use it, simply add your private key to the `.env` file:
+By default, **Arthera** is enabled. To use it, simply add your private key to the `.env` file:
 
 ```env
 EVM_PRIVATE_KEY=your-private-key-here
@@ -30,11 +30,10 @@ ETHEREUM_PROVIDER_ARTHERA=https://rpc.arthera.net
 
 ## Provider
 
-The **Wallet Provider** initializes with Arthera mainnet. It:
+The **Wallet Provider** initializes with Arthera. It:
 
 - Provides the **context** of the currently connected address and its balance.
 - Creates **Public** and **Wallet clients** to interact with the supported chain.
-- Allows adding chains dynamically at runtime.
 
 ---
 
@@ -42,7 +41,7 @@ The **Wallet Provider** initializes with Arthera mainnet. It:
 
 ### Transfer
 
-Transfer tokens from one address to another on any Arthera-compatible chain. Just specify the:
+Transfer tokens from one address to another on Arthera. Just specify the:
 
 - **Amount**
 - **Chain**
