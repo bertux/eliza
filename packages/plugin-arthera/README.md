@@ -1,4 +1,4 @@
-# `@elizaos/plugin-evm`
+# `@elizaos/plugin-arthera`
 
 This plugin provides actions and providers for interacting with EVM-compatible chains.
 
@@ -86,7 +86,7 @@ The plugin contains tests. Whether you're using **TDD** or not, please make sure
 
 ### Running Tests
 
-Navigate to the `plugin-evm` directory and run:
+Navigate to the `plugin-arthera` directory and run:
 
 ```bash
 pnpm test
