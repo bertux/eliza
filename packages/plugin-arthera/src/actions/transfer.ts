@@ -109,7 +109,7 @@ export const transferAction = {
         runtime: IAgentRuntime,
         _message: Memory,
         state: State,
-        _options: any,
+        _options: Record<string, unknown>,
         callback?: HandlerCallback
     ) => {
         console.log("Transfer action handler called");
