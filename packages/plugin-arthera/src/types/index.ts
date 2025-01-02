@@ -52,14 +52,6 @@ export interface TransferParams {
     data?: `0x${string}`;
 }
 
-export interface SwapParams {
-    chain: SupportedChain;
-    fromToken: Address;
-    toToken: Address;
-    amount: string;
-    slippage?: number;
-}
-
 // Plugin configuration
 export interface EvmPluginConfig {
     rpcUrl?: {
