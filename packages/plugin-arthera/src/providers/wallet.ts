@@ -20,8 +20,8 @@ import * as viemChains from "viem/chains";
 import type { SupportedChain } from "../types";
 
 export class WalletProvider {
-    private currentChain: SupportedChain = "mainnet";
-    chains: Record<string, Chain> = { mainnet: viemChains.mainnet };
+    private currentChain: SupportedChain = "arthera";
+    chains: Record<string, Chain> = { arthera: viemChains.arthera };
     account: PrivateKeyAccount;
 
     constructor(privateKey: `0x${string}`, chains?: Record<string, Chain>) {
@@ -101,21 +101,6 @@ export class WalletProvider {
             console.error("Error getting wallet balance:", error);
             return null;
         }
-    }
-
-    addChain(chain: Record<string, Chain>) {
-        this.setChains(chain);
-    }
-
-    switchChain(chainName: SupportedChain, customRpcUrl?: string) {
-        if (!this.chains[chainName]) {
-            const chain = WalletProvider.genChainFromName(
-                chainName,
-                customRpcUrl
-            );
-            this.addChain({ [chainName]: chain });
-        }
-        this.setCurrentChain(chainName);
     }
 
     private setAccount = (pk: `0x${string}`) => {
