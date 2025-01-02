@@ -1,11 +1,12 @@
 import { Character, ModelProviderName } from "./types.ts";
+import { artheraPlugin } from "@elizaos/plugin-arthera";
 
 export const defaultCharacter: Character = {
     name: "Eliza",
     username: "eliza",
-    plugins: [],
+    plugins: [artheraPlugin],
     clients: [],
-    modelProvider: ModelProviderName.LLAMALOCAL,
+    modelProvider: ModelProviderName.AKASH_CHAT_API,
     settings: {
         secrets: {},
         voice: {
