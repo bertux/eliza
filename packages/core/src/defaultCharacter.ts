@@ -9,7 +9,7 @@ export const defaultCharacter: Character = {
     modelProvider: ModelProviderName.AKASH_CHAT_API,
     settings: {
         chains: {
-            evm: ["arthera"]
+            evm: ["arthera"],
         },
         secrets: {},
         voice: {
