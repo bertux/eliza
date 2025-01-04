@@ -58,7 +58,7 @@ export interface ArtheraPluginConfig {
         arthera?: string;
     };
     secrets?: {
-        EVM_PRIVATE_KEY: string;
+        ARTHERA_PRIVATE_KEY: string;
     };
     testMode?: boolean;
     multicall?: {

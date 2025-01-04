@@ -151,7 +151,7 @@ export const transferAction = {
     },
     template: transferTemplate,
     validate: async (runtime: IAgentRuntime) => {
-        const privateKey = runtime.getSetting("EVM_PRIVATE_KEY");
+        const privateKey = runtime.getSetting("ARTHERA_PRIVATE_KEY");
         return typeof privateKey === "string" && privateKey.startsWith("0x");
     },
     examples: [
