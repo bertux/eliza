@@ -148,7 +148,7 @@ importers:
         specifier: workspace:*
         version: link:../packages/plugin-aptos
       '@elizaos/plugin-arthera':
-        specifier: workspace:0.1.7-alpha.2
+        specifier: workspace:*
         version: link:../packages/plugin-arthera
       '@elizaos/plugin-avalanche':
         specifier: workspace:*

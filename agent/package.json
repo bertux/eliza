@@ -34,7 +34,7 @@
     "@elizaos/plugin-3d-generation": "workspace:*",
     "@elizaos/plugin-abstract": "workspace:*",
     "@elizaos/plugin-aptos": "workspace:*",
-    "@elizaos/plugin-arthera": "workspace:0.1.7-alpha.2",
+    "@elizaos/plugin-arthera": "workspace:*",
     "@elizaos/plugin-avalanche": "workspace:*",
     "@elizaos/plugin-bootstrap": "workspace:*",
     "@elizaos/plugin-coinbase": "workspace:*",
