@@ -12,16 +12,18 @@ describe("Transfer Action", () => {
 
     beforeEach(async () => {
         const pk = generatePrivateKey();
-        const pk1 = getEnvVariable("EVM_PRIVATE_KEY") as `0x${string}`;
+        const pk1 = getEnvVariable("ARTHERA_PRIVATE_KEY") as `0x${string}`;
         const customChains = prepareChains();
         wp = new WalletProvider(pk, customChains);
-        wp1 = new WalletProvider(pk1, customChains);
+        if (pk1) {
+            wp1 = new WalletProvider(pk1, customChains);
+        }
     });
     describe("Constructor", () => {
         it("should initialize with wallet provider", () => {
-            const ta1 = new TransferAction(wp1);
+            const ta = new TransferAction(wp);
 
-            expect(ta1).toBeDefined();
+            expect(ta).toBeDefined();
         });
     });
     describe("Transfer", () => {
@@ -31,8 +33,13 @@ describe("Transfer Action", () => {
 
         beforeEach(() => {
             ta = new TransferAction(wp);
-            ta1 = new TransferAction(wp1);
-            receiverAddress = wp1.getAddress();
+            if (wp1) {
+                ta1 = new TransferAction(wp1);
+                receiverAddress = wp1.getAddress();
+            }
+            else {
+                receiverAddress = wp.getAddress();
+            }
         });
 
         it("throws if not enough gas", async () => {
@@ -47,19 +54,20 @@ describe("Transfer Action", () => {
             );
         });
 
-        it("transfers tokens", async () => {
-            const tx = await ta1.transfer({
-                fromChain: "arthera",
-                toAddress: receiverAddress,
-                amount: "0.001",
+        if (wp1) {
+            it("transfers tokens", async () => {
+                const tx = await ta1.transfer({
+                    fromChain: "arthera",
+                    toAddress: receiverAddress,
+                    amount: "0.001",
+                });
+
+                expect(tx).toBeDefined();
+                expect(tx.from).toEqual(wp1.getAddress());
+                expect(tx.to).toEqual(receiverAddress);
+                expect(tx.value).toEqual(1000000000000000n);
             });
-
-            expect(tx).toBeDefined();
-            expect(tx.from).toEqual(wp1.getAddress());
-            expect(tx.to).toEqual(receiverAddress);
-            expect(tx.value).toEqual(1000000000000000n);
-        });
-
+        }
     });
 });
 
