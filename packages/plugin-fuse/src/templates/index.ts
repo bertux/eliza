@@ -21,3 +21,25 @@ Respond with a JSON markdown block containing only the extracted values. All fie
 }
 \`\`\`
 `;
+
+export const createTokenTemplate = `Respond with a JSON markdown block containing only the extracted values.
+
+If the user did not provide enough details, respond with what you can. Name and Symbol are required.
+
+Example response for a new token:
+\`\`\`json
+{
+    "name": "Test Token",
+    "symbol": "TEST"
+}
+\`\`\`
+
+## Recent Messages
+
+{{recentMessages}}
+
+Given the recent messages, extract the following information about the requested token creation:
+- Name
+- Symbol
+
+Respond with a JSON markdown block containing only the extracted values.`;

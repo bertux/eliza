@@ -71,3 +71,11 @@ export interface ProviderError extends Error {
     code?: number;
     data?: unknown;
 }
+
+export interface TokenCreationParameters {
+    name: string;
+    symbol: string;
+    totalSupply: bigint;
+    decimals: number;
+    tokenOwner: Address;
+}
