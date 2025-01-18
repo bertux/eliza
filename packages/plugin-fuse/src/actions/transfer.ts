@@ -48,7 +48,6 @@ export class TransferAction {
                 hash,
                 from: walletClient.account.address,
                 to: params.toAddress,
-                data: txData as Hex,
             };
         } catch (error) {
             throw new Error(`Transfer failed: ${error.message}`);
