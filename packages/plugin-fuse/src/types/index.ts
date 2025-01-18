@@ -19,7 +19,6 @@ export interface Transaction {
     hash: Hash;
     from: Address;
     to: Address;
-    data?: `0x${string}`;
     chainId?: number;
 }
 
@@ -47,7 +46,6 @@ export interface ChainConfig {
 export interface TransferParams {
     fromChain: SupportedChain;
     toAddress: Address;
-    data?: `0x${string}`;
 }
 
 // Plugin configuration
