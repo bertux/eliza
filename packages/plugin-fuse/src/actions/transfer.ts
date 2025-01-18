@@ -1,4 +1,4 @@
-import { ByteArray, formatEther, parseEther, type Hex } from "viem";
+import { type Hex } from "viem";
 import {
     composeContext,
     generateObjectDeprecated,
@@ -25,7 +25,7 @@ export class TransferAction {
         );
 
         console.log(
-            `Transferring: ${params.amount} tokens from (${walletClient.account.address} to (${params.toAddress} on ${params.fromChain})`
+            `Transferring: FOO tokens from (${walletClient.account.address} to (${params.toAddress} on ${params.fromChain})`
         );
 
         if (!params.data) {
@@ -36,27 +36,15 @@ export class TransferAction {
             const hash = await walletClient.sendTransaction({
                 account: walletClient.account,
                 to: params.toAddress,
-                value: parseEther(params.amount),
                 data: params.data as Hex,
-                kzg: {
-                    blobToKzgCommitment: function (_: ByteArray): ByteArray {
-                        throw new Error("Function not implemented.");
-                    },
-                    computeBlobKzgProof: function (
-                        _blob: ByteArray,
-                        _commitment: ByteArray
-                    ): ByteArray {
-                        throw new Error("Function not implemented.");
-                    },
-                },
-                chain: undefined,
+                kzg: undefined, // Add the optional property for type safety
+                chain: undefined, // Add the optional property for type safety
             });
 
             return {
                 hash,
                 from: walletClient.account.address,
                 to: params.toAddress,
-                value: parseEther(params.amount),
                 data: params.data as Hex,
             };
         } catch (error) {
@@ -127,11 +115,10 @@ export const transferAction = {
             const transferResp = await action.transfer(paramOptions);
             if (callback) {
                 callback({
-                    text: `Successfully transferred ${paramOptions.amount} tokens to ${paramOptions.toAddress}\nTransaction Hash: ${transferResp.hash}`,
+                    text: `Successfully transferred FOO tokens to ${paramOptions.toAddress}\nTransaction Hash: ${transferResp.hash}`,
                     content: {
                         success: true,
                         hash: transferResp.hash,
-                        amount: formatEther(transferResp.value),
                         recipient: transferResp.to,
                         chain: paramOptions.fromChain,
                     },

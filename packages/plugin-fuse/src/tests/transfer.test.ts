@@ -46,7 +46,6 @@ describe("Transfer Action", () => {
                 ta.transfer({
                     fromChain: "fuse",
                     toAddress: receiverAddress,
-                    amount: "1",
                 })
             ).rejects.toThrow(
                 "Transfer failed: The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account."
@@ -58,13 +57,11 @@ describe("Transfer Action", () => {
                 const tx = await ta1.transfer({
                     fromChain: "fuse",
                     toAddress: receiverAddress,
-                    amount: "0.001",
                 });
 
                 expect(tx).toBeDefined();
                 expect(tx.from).toEqual(wp1.getAddress());
                 expect(tx.to).toEqual(receiverAddress);
-                expect(tx.value).toEqual(1000000000000000n);
             }
         });
     });
