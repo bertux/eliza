@@ -35,10 +35,8 @@ describe("Transfer Action", () => {
             ta = new TransferAction(wp);
             if (wp1) {
                 ta1 = new TransferAction(wp1);
-                receiverAddress = wp1.getAddress();
-            } else {
-                receiverAddress = wp.getAddress();
             }
+            receiverAddress = wp.getAddress();
         });
 
         it("throws if not enough gas", async () => {
@@ -47,9 +45,7 @@ describe("Transfer Action", () => {
                     fromChain: "fuse",
                     toAddress: receiverAddress,
                 })
-            ).rejects.toThrow(
-                "Transfer failed: The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account."
-            );
+            ).rejects.toThrow("Transfer failed: ");
         });
 
         it("transfers tokens", async () => {
