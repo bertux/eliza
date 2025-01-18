@@ -77,8 +77,8 @@ export interface TokenCreationParameters {
     name: string;
     symbol: string;
     decimals: number;
-    totalSupply: bigint;
+    initialSupply: bigint;
     tokenOwner: Address;
     factoryAddress: Address;
-    chain: Chain;
+    fromChain: SupportedChain;
 }

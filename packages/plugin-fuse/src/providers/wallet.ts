@@ -16,13 +16,11 @@ import type {
     PrivateKeyAccount,
 } from "viem";
 import * as viemChains from "viem/chains";
-import { fuseChain } from "../constants/chains";  // ✅ Imported custom Fuse chain
-
 import type { SupportedChain } from "../types";
 
 export class WalletProvider {
     private currentChain: SupportedChain = "fuse";
-    chains: Record<string, Chain> = { fuse: fuseChain };  // ✅ Replaced viemChains.fuse
+    chains: Record<string, Chain> = { fuse: viemChains.fuse };
     account: PrivateKeyAccount;
 
     constructor(privateKey: `0x${string}`, chains?: Record<string, Chain>) {
@@ -46,23 +44,25 @@ export class WalletProvider {
         chainName: SupportedChain
     ): PublicClient<HttpTransport, Chain, Account | undefined> {
         const transport = this.createHttpTransport(chainName);
-        return createPublicClient({
+        const publicClient = createPublicClient({
             chain: this.chains[chainName],
             transport,
         });
+        return publicClient;
     }
 
     getWalletClient(chainName: SupportedChain): WalletClient {
         const transport = this.createHttpTransport(chainName);
-        return createWalletClient({
+        const walletClient = createWalletClient({
             chain: this.chains[chainName],
             transport,
             account: this.account,
         });
+        return walletClient;
     }
 
     getChainConfigs(chainName: SupportedChain): Chain {
-        const chain = this.chains[chainName] || viemChains[chainName];  // ✅ Checks custom chains first
+        const chain = this.chains[chainName] || viemChains[chainName];
 
         if (!chain?.id) {
             throw new Error(`Invalid chain name: ${chainName}`);
@@ -127,13 +127,13 @@ export class WalletProvider {
         chainName: string,
         customRpcUrl?: string | null
     ): Chain {
-        const baseChain = viemChains[chainName] || fuseChain;  // ✅ Fuse as fallback
+        const baseChain = viemChains[chainName] || viemChains.fuse;
 
         if (!baseChain?.id) {
             throw new Error(`Invalid chain name: ${chainName}`);
         }
 
-        return customRpcUrl
+        const viemChain: Chain = customRpcUrl
             ? {
                   ...baseChain,
                   rpcUrls: {
@@ -144,6 +144,7 @@ export class WalletProvider {
                   },
               }
             : baseChain;
+        return viemChain;
     }
 }
 
