@@ -1,4 +1,4 @@
-import { type Hex } from "viem";
+import { encodeFunctionData, type Hex } from "viem";
 import {
     composeContext,
     generateObjectDeprecated,
@@ -12,6 +12,7 @@ import {
 import { initWalletProvider, WalletProvider } from "../providers/wallet";
 import type { Transaction, TransferParams } from "../types";
 import { transferTemplate } from "../templates";
+import fooArtifacts from "../contracts/artifacts/Foo.json";
 
 export { transferTemplate };
 
@@ -28,15 +29,17 @@ export class TransferAction {
             `Transferring: FOO tokens from (${walletClient.account.address} to (${params.toAddress} on ${params.fromChain})`
         );
 
-        if (!params.data) {
-            params.data = "0x";
-        }
+        const txData = encodeFunctionData({
+            abi: fooArtifacts,
+            functionName: "transfer",
+            args: [params.toAddress, 100n],
+        });
 
         try {
             const hash = await walletClient.sendTransaction({
                 account: walletClient.account,
                 to: params.toAddress,
-                data: params.data as Hex,
+                data: txData as Hex,
                 kzg: undefined, // Add the optional property for type safety
                 chain: undefined, // Add the optional property for type safety
             });
@@ -45,7 +48,7 @@ export class TransferAction {
                 hash,
                 from: walletClient.account.address,
                 to: params.toAddress,
-                data: params.data as Hex,
+                data: txData as Hex,
             };
         } catch (error) {
             throw new Error(`Transfer failed: ${error.message}`);
