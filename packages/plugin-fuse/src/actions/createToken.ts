@@ -6,7 +6,32 @@ import erc20FactoryArtifacts from "../contracts/artifacts/ERC20Factory.json";
 import {
     encodeFunctionData,
     Hex,
+    Chain,
+    defineChain,
 } from "viem";
+
+// Define the Fuse Chain for viem compatibility
+export const fuseChain = defineChain({
+    id: 122,
+    name: "Fuse",
+    network: "fuse",
+    nativeCurrency: {
+        name: "Fuse Token",
+        symbol: "FUSE",
+        decimals: 18,
+    },
+    rpcUrls: {
+        default: {
+            http: ["https://rpc.fuse.io"],
+        },
+    },
+    blockExplorers: {
+        default: {
+            name: "Fuse Explorer",
+            url: "https://explorer.fuse.io",
+        },
+    },
+});
 
 export interface TokenCreationParameters {
     name: string;
@@ -15,17 +40,17 @@ export interface TokenCreationParameters {
     initialSupply: string;
     tokenOwner: `0x${string}`;
     factoryAddress: `0x${string}`;
-    chain: string;  // Changed from Chain to string
+    chain: typeof fuseChain;
 }
 
 export class CreateTokenAction {
     constructor(private walletProvider: WalletProvider) {}
 
     async create(params: TokenCreationParameters): Promise<Transaction> {
-        const walletClient = this.walletProvider.getWalletClient(params.chain as any);
+        const walletClient = this.walletProvider.getWalletClient(fuseChain);
 
         const txData = encodeFunctionData({
-            abi: erc20FactoryArtifacts as any,  // Fixed ABI access
+            abi: erc20FactoryArtifacts.abi as any,
             functionName: "createToken",
             args: [
                 params.name,
@@ -37,8 +62,8 @@ export class CreateTokenAction {
         });
 
         try {
-            const chainConfig = this.walletProvider.getChainConfigs(params.chain as any);
-            const publicClient = this.walletProvider.getPublicClient(params.chain as any);
+            const chainConfig = this.walletProvider.getChainConfigs(fuseChain);
+            const publicClient = this.walletProvider.getPublicClient(fuseChain);
 
             const hash = await walletClient.sendTransaction({
                 account: walletClient.account,
@@ -94,7 +119,7 @@ export const createTokenAction = {
                 initialSupply: options.initialSupply,
                 tokenOwner: options.tokenOwner as `0x${string}`,
                 factoryAddress: options.factoryAddress as `0x${string}`,
-                chain: options.chain as string,  // Fixed chain typing
+                chain: fuseChain,
             };
 
             const result = await action.create(tokenParams);

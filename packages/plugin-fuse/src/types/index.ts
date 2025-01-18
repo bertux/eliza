@@ -72,10 +72,13 @@ export interface ProviderError extends Error {
     data?: unknown;
 }
 
+// Updated TokenCreationParameters
 export interface TokenCreationParameters {
     name: string;
     symbol: string;
-    totalSupply: bigint;
     decimals: number;
+    totalSupply: bigint;
     tokenOwner: Address;
+    factoryAddress: Address;
+    chain: Chain;
 }
