@@ -38,14 +38,7 @@ export class CreateTokenAction {
                 value: BigInt(0),
                 data: txData as Hex,
                 chain: chainConfig,
-                kzg: {
-                    blobToKzgCommitment: () => {
-                        throw new Error("KZG commitment not implemented.");
-                    },
-                    computeBlobKzgProof: () => {
-                        throw new Error("KZG proof not implemented.");
-                    },
-                },
+                kzg: undefined,
             });
 
             await publicClient.waitForTransactionReceipt({ hash });
@@ -75,7 +68,7 @@ export const createTokenAction = {
         callback?: any
     ) => {
         try {
-            const privateKey = runtime.getSetting("EVM_PRIVATE_KEY") as `0x${string}`;
+            const privateKey = runtime.getSetting("FUSE_PRIVATE_KEY") as `0x${string}`;
             const walletProvider = new WalletProvider(privateKey);
             const action = new CreateTokenAction(walletProvider);
 
@@ -113,7 +106,7 @@ export const createTokenAction = {
     },
     template: createTokenTemplate,
     validate: async (runtime: IAgentRuntime) => {
-        const privateKey = runtime.getSetting("EVM_PRIVATE_KEY");
+        const privateKey = runtime.getSetting("FUSE_PRIVATE_KEY");
         return typeof privateKey === "string" && privateKey.startsWith("0x");
     },
     examples: [
