@@ -82,8 +82,8 @@ export const createTokenAction = {
             const tokenParams: TokenCreationParameters = {
                 name: options.name,
                 symbol: options.symbol,
-                decimals: options.decimals,
-                initialSupply: options.initialSupply,
+                decimals: Number(options.decimals),
+                initialSupply: BigInt(options.initialSupply),
                 tokenOwner: options.tokenOwner as `0x${string}`,
                 factoryAddress: options.factoryAddress as `0x${string}`,
                 fromChain: options.fromChain,
