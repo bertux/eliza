@@ -15,6 +15,7 @@ contract CustomToken is ERC20, Ownable {
         uint256 initialSupply,
         address owner
     ) ERC20(name, symbol) Ownable(owner) {
+        require(decimalsValue <= 18, "Decimals cannot exceed 18");
         _decimals = decimalsValue;
         _mint(owner, initialSupply * (10 ** decimalsValue));
     }
