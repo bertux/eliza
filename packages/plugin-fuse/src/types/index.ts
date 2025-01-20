@@ -76,8 +76,6 @@ export interface ProviderError extends Error {
 export interface TokenCreationParameters {
     name: string;
     symbol: string;
-    decimals: number;
-    initialSupply: bigint;
     tokenOwner: Address;
     factoryAddress: Address;
     fromChain: SupportedChain;

@@ -1,12 +1,9 @@
 import type { IAgentRuntime, Memory, State } from "@elizaos/core";
 import { WalletProvider } from "../providers/wallet";
 import { createTokenTemplate } from "../templates";
-import type { SupportedChain, Transaction, TokenCreationParameters } from "../types";
+import type { Transaction, TokenCreationParameters } from "../types";
 import erc20FactoryArtifacts from "../contracts/artifacts/ERC20Factory.json";
-import {
-    encodeFunctionData,
-    Hex,
-} from "viem"
+import { encodeFunctionData, Hex } from "viem";
 
 export class CreateTokenAction {
     constructor(private walletProvider: WalletProvider) {}
@@ -19,18 +16,16 @@ export class CreateTokenAction {
         const txData = encodeFunctionData({
             abi: erc20FactoryArtifacts as any,
             functionName: "createToken",
-            args: [
-                params.name,
-                params.symbol,
-                params.decimals,
-                params.initialSupply,
-                params.tokenOwner,
-            ],
+            args: [params.name, params.symbol, params.tokenOwner],
         });
 
         try {
-            const chainConfig = this.walletProvider.getChainConfigs(params.fromChain);
-            const publicClient = this.walletProvider.getPublicClient(params.fromChain);
+            const chainConfig = this.walletProvider.getChainConfigs(
+                params.fromChain
+            );
+            const publicClient = this.walletProvider.getPublicClient(
+                params.fromChain
+            );
 
             const hash = await walletClient.sendTransaction({
                 account: walletClient.account,
@@ -68,15 +63,15 @@ export const createTokenAction = {
         callback?: any
     ) => {
         try {
-            const privateKey = runtime.getSetting("FUSE_PRIVATE_KEY") as `0x${string}`;
+            const privateKey = runtime.getSetting(
+                "FUSE_PRIVATE_KEY"
+            ) as `0x${string}`;
             const walletProvider = new WalletProvider(privateKey);
             const action = new CreateTokenAction(walletProvider);
 
             const tokenParams: TokenCreationParameters = {
                 name: options.name,
                 symbol: options.symbol,
-                decimals: Number(options.decimals),
-                initialSupply: BigInt(options.initialSupply),
                 tokenOwner: options.tokenOwner as `0x${string}`,
                 factoryAddress: options.factoryAddress as `0x${string}`,
                 fromChain: options.fromChain,

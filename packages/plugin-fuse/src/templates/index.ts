@@ -31,8 +31,6 @@ Example response for a new token:
 {
     "name": "Test Token",
     "symbol": "TEST",
-    "decimals": 18,
-    "initialSupply": "1000000000000000000",
     "tokenOwner": "0x1234567890abcdef1234567890abcdef12345678",
     "fromChain": "fuse"
 }
@@ -45,8 +43,6 @@ Example response for a new token:
 Given the recent messages, extract the following information about the requested token creation:
 - Name
 - Symbol
-- Decimals
-- Initial Supply
 - Token Owner (must be a valid address starting with "0x")
 - From Chain (must be one of ["fuse", "base", ...])
 
