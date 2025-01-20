@@ -6,23 +6,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 // Custom ERC20 token contract
 contract CustomToken is ERC20, Ownable {
-    uint8 private _decimals;
 
     constructor(
         string memory name,
         string memory symbol,
-        uint8 decimalsValue,
-        uint256 initialSupply,
         address owner
     ) ERC20(name, symbol) Ownable(owner) {
-        require(decimalsValue <= 18, "Decimals cannot exceed 18");
-        _decimals = decimalsValue;
-        _mint(owner, initialSupply * (10 ** decimalsValue));
+        _mint(owner, 100 * (10 ** 6) * (10 ** 18));
     }
 
-    function decimals() public view override returns (uint8) {
-        return _decimals;
-    }
 }
 
 // Factory contract to deploy new ERC20 tokens
@@ -39,16 +31,12 @@ contract ERC20Factory is Ownable {
      * @dev Creates a new ERC20 token
      * @param name Token name
      * @param symbol Token symbol
-     * @param decimals Token decimals
-     * @param initialSupply Initial supply of tokens
      * @param tokenOwner Address that will own the token contract
      * @return address Address of the newly created token
      */
     function createToken(
         string memory name,
         string memory symbol,
-        uint8 decimals,
-        uint256 initialSupply,
         address tokenOwner
     ) public returns (address) {
         require(bytes(name).length > 0, "Name cannot be empty");
@@ -58,8 +46,6 @@ contract ERC20Factory is Ownable {
         CustomToken newToken = new CustomToken(
             name,
             symbol,
-            decimals,
-            initialSupply,
             tokenOwner
         );
 
@@ -77,11 +63,4 @@ contract ERC20Factory is Ownable {
         return createdTokens.length;
     }
 
-    /**
-     * @dev Returns all tokens created by this factory
-     * @return address[] Array of token addresses
-     */
-    function getAllTokens() public view returns (address[] memory) {
-        return createdTokens;
-    }
 }
