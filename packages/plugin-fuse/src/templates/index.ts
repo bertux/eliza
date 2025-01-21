@@ -24,7 +24,7 @@ Respond with a JSON markdown block containing only the extracted values. All fie
 
 export const createTokenTemplate = `Respond with a JSON markdown block containing only the extracted values.
 
-If the user did not provide enough details, respond with what you can. The following fields are required: Name, Symbol, Decimals, Initial Supply, Token Owner, and From Chain.
+If the user did not provide enough details, respond with what you can. The following fields are required: Name, Symbol, Token Owner, and From Chain.
 
 Example response for a new token:
 \`\`\`json
