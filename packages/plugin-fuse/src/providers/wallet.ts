@@ -62,7 +62,7 @@ export class WalletProvider {
     }
 
     getChainConfigs(chainName: SupportedChain): Chain {
-        const chain = this.chains[chainName] || viemChains[chainName];
+        const chain = viemChains[chainName];
 
         if (!chain?.id) {
             throw new Error(`Invalid chain name: ${chainName}`);
@@ -94,7 +94,10 @@ export class WalletProvider {
             });
             return formatUnits(balance, 18);
         } catch (error) {
-            console.error(`Error getting wallet balance for ${chainName}:`, error);
+            console.error(
+                `Error getting wallet balance for ${chainName}:`,
+                error
+            );
             return null;
         }
     }
@@ -148,12 +151,16 @@ export class WalletProvider {
     }
 }
 
-const genChainsFromRuntime = (runtime: IAgentRuntime): Record<string, Chain> => {
+const genChainsFromRuntime = (
+    runtime: IAgentRuntime
+): Record<string, Chain> => {
     const chainNames = ["fuse"];
     const chains: Record<string, Chain> = {};
 
     chainNames.forEach((chainName) => {
-        const rpcUrl = runtime.getSetting("ETHEREUM_PROVIDER_" + chainName.toUpperCase());
+        const rpcUrl = runtime.getSetting(
+            "ETHEREUM_PROVIDER_" + chainName.toUpperCase()
+        );
         chains[chainName] = WalletProvider.genChainFromName(chainName, rpcUrl);
     });
 
@@ -171,7 +178,11 @@ export const initWalletProvider = (runtime: IAgentRuntime) => {
 };
 
 export const fuseWalletProvider: Provider = {
-    async get(runtime: IAgentRuntime, _message: Memory, _state?: State): Promise<string | null> {
+    async get(
+        runtime: IAgentRuntime,
+        _message: Memory,
+        _state?: State
+    ): Promise<string | null> {
         try {
             const walletProvider = initWalletProvider(runtime);
             const address = walletProvider.getAddress();

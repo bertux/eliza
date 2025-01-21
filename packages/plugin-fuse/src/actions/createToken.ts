@@ -15,7 +15,9 @@ import erc20FactoryArtifacts from "../contracts/artifacts/ERC20Factory.json";
 import { encodeFunctionData, Hex } from "viem";
 export const factoryAddress = "0xB22D28b7197e787942098Ef65C1562e1AF2496F9";
 export class CreateTokenAction {
-    constructor(private walletProvider: WalletProvider) {}
+    constructor(private walletProvider: WalletProvider) {
+        this.walletProvider = walletProvider;
+    }
 
     async create(params: TokenCreationParameters): Promise<Transaction> {
         const walletClient = this.walletProvider.getWalletClient(
