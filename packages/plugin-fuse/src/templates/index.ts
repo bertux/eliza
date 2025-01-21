@@ -32,7 +32,7 @@ Example response for a new token:
     "name": "Test Token",
     "symbol": "TEST",
     "tokenOwner": "0x1234567890abcdef1234567890abcdef12345678",
-    "fromChain": "fuse"
+    "fromChain": SUPPORTED_CHAINS
 }
 \`\`\`
 
@@ -44,6 +44,6 @@ Given the recent messages, extract the following information about the requested
 - Name
 - Symbol
 - Token Owner (must be a valid address starting with "0x")
-- From Chain (must be one of ["fuse", "base", ...])
+- From Chain (must be one of ["fuse", "base", ...] like in viem/chains)
 
 Respond with a JSON markdown block containing only the extracted values.`;

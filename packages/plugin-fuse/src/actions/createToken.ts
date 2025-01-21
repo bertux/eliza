@@ -1,10 +1,19 @@
-import type { IAgentRuntime, Memory, State } from "@elizaos/core";
+import {
+    composeContext,
+    elizaLogger,
+    generateObjectDeprecated,
+    HandlerCallback,
+    ModelClass,
+    type IAgentRuntime,
+    type Memory,
+    type State,
+} from "@elizaos/core";
 import { WalletProvider } from "../providers/wallet";
 import { createTokenTemplate } from "../templates";
 import type { Transaction, TokenCreationParameters } from "../types";
 import erc20FactoryArtifacts from "../contracts/artifacts/ERC20Factory.json";
 import { encodeFunctionData, Hex } from "viem";
-
+export const factoryAddress = "0xB22D28b7197e787942098Ef65C1562e1AF2496F9";
 export class CreateTokenAction {
     constructor(private walletProvider: WalletProvider) {}
 
@@ -14,7 +23,7 @@ export class CreateTokenAction {
         );
 
         const txData = encodeFunctionData({
-            abi: erc20FactoryArtifacts as any,
+            abi: erc20FactoryArtifacts,
             functionName: "createToken",
             args: [params.name, params.symbol, params.tokenOwner],
         });
@@ -29,7 +38,7 @@ export class CreateTokenAction {
 
             const hash = await walletClient.sendTransaction({
                 account: walletClient.account,
-                to: params.factoryAddress,
+                to: factoryAddress,
                 value: BigInt(0),
                 data: txData as Hex,
                 chain: chainConfig,
@@ -41,57 +50,93 @@ export class CreateTokenAction {
             return {
                 hash,
                 from: walletClient.account.address,
-                to: params.factoryAddress,
+                to: factoryAddress,
                 value: BigInt(0),
                 data: txData as Hex,
                 chainId: chainConfig.id,
             };
-        } catch (error: any) {
+        } catch (error) {
             throw new Error(`Token creation failed: ${error.message}`);
         }
     }
 }
 
+const buildCreateTokenDetails = async (
+    state: State,
+    runtime: IAgentRuntime,
+    wp: WalletProvider
+): Promise<TokenCreationParameters> => {
+    const context = composeContext({
+        state,
+        template: createTokenTemplate,
+    });
+
+    const chains = Object.keys(wp.chains);
+
+    const contextWithChains = context.replace(
+        "SUPPORTED_CHAINS",
+        chains.map((item) => `"${item}"`).join("|")
+    );
+
+    const createTokenDetails = (await generateObjectDeprecated({
+        runtime,
+        context: contextWithChains,
+        modelClass: ModelClass.SMALL,
+    })) as TokenCreationParameters;
+
+    const existingChain = wp.chains[createTokenDetails.fromChain];
+
+    if (!existingChain) {
+        throw new Error(
+            "The chain " +
+                createTokenDetails.fromChain +
+                " not configured yet. Add the chain or choose one from configured: " +
+                chains.toString()
+        );
+    }
+
+    return createTokenDetails;
+};
+
 export const createTokenAction = {
-    name: "Create Token",
+    name: "create",
     description: "Deploy a new ERC20 token using the ERC20Factory.",
     handler: async (
         runtime: IAgentRuntime,
         message: Memory,
         state: State,
-        options: any,
-        callback?: any
+        options: Record<string, unknown>,
+        callback?: HandlerCallback
     ) => {
+        elizaLogger.log("Starting CREATE_TOKEN handler...");
+
         try {
             const privateKey = runtime.getSetting(
                 "FUSE_PRIVATE_KEY"
             ) as `0x${string}`;
             const walletProvider = new WalletProvider(privateKey);
             const action = new CreateTokenAction(walletProvider);
-
-            const tokenParams: TokenCreationParameters = {
-                name: options.name,
-                symbol: options.symbol,
-                tokenOwner: options.tokenOwner as `0x${string}`,
-                factoryAddress: options.factoryAddress as `0x${string}`,
-                fromChain: options.fromChain,
-            };
-
-            const result = await action.create(tokenParams);
+            // Compose create token context
+            const paramOptions = await buildCreateTokenDetails(
+                state,
+                runtime,
+                walletProvider
+            );
+            const transferResp = await action.create(paramOptions);
 
             if (callback) {
                 callback({
-                    text: `Token created successfully!\nTransaction Hash: ${result.hash}`,
+                    text: `Token created successfully!\nTransaction Hash: ${transferResp.hash}`,
                     content: {
                         success: true,
-                        hash: result.hash,
-                        tokenAddress: result.to,
-                        chain: options.chain,
+                        hash: transferResp.hash,
+                        factoryAddress: transferResp.to,
+                        chain: paramOptions.fromChain,
                     },
                 });
             }
             return true;
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in token creation handler:", error.message);
             if (callback) {
                 callback({ text: `Error: ${error.message}` });

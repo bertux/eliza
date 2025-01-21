@@ -77,6 +77,5 @@ export interface TokenCreationParameters {
     name: string;
     symbol: string;
     tokenOwner: Address;
-    factoryAddress: Address;
     fromChain: SupportedChain;
 }

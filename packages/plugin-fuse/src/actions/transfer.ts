@@ -1,6 +1,7 @@
-import { ByteArray, formatEther, parseEther, type Hex } from "viem";
+import { formatEther, parseEther, type Hex } from "viem";
 import {
     composeContext,
+    elizaLogger,
     generateObjectDeprecated,
     HandlerCallback,
     ModelClass,
@@ -24,7 +25,7 @@ export class TransferAction {
             params.fromChain
         );
 
-        console.log(
+        elizaLogger.log(
             `Transferring: ${params.amount} tokens from (${walletClient.account.address} to (${params.toAddress} on ${params.fromChain})`
         );
 
@@ -102,7 +103,7 @@ export const transferAction = {
         _options: Record<string, unknown>,
         callback?: HandlerCallback
     ) => {
-        console.log("Transfer action handler called");
+        elizaLogger.log("Transfer action handler called");
         const walletProvider = initWalletProvider(runtime);
         const action = new TransferAction(walletProvider);
 
@@ -129,7 +130,7 @@ export const transferAction = {
             }
             return true;
         } catch (error) {
-            console.error("Error during token transfer:", error);
+            elizaLogger.error("Error during token transfer:", error);
             if (callback) {
                 callback({
                     text: `Error transferring tokens: ${error.message}`,
