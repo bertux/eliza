@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
-import { lukso, Chain } from "viem/chains";
+import { luksoTestnet, Chain } from "viem/chains";
 
 import { WalletProvider } from "../providers/wallet";
 
 const customRpcUrls = {
-    lukso: "custom-rpc.lukso.io",
+    luksoTestnet: "custom-rpc.luksoTestnet.io",
 };
 
 describe("Wallet provider", () => {
@@ -16,7 +16,7 @@ describe("Wallet provider", () => {
     beforeAll(() => {
         pk = generatePrivateKey();
 
-        const chainNames = ["lukso"];
+        const chainNames = ["luksoTestnet"];
         chainNames.forEach(
             (chain) =>
                 (customChains[chain] = WalletProvider.genChainFromName(chain))
@@ -32,21 +32,21 @@ describe("Wallet provider", () => {
 
             expect(walletProvider.getAddress()).toEqual(expectedAddress);
         });
-        it("sets default chain to lukso", () => {
+        it("sets default chain to luksoTestnet", () => {
             walletProvider = new WalletProvider(pk);
 
-            expect(walletProvider.chains.lukso.id).toEqual(lukso.id);
-            expect(walletProvider.getCurrentChain().id).toEqual(lukso.id);
+            expect(walletProvider.chains.luksoTestnet.id).toEqual(luksoTestnet.id);
+            expect(walletProvider.getCurrentChain().id).toEqual(luksoTestnet.id);
         });
         it("sets custom chains", () => {
             walletProvider = new WalletProvider(pk, customChains);
 
-            expect(walletProvider.chains.lukso.id).toEqual(lukso.id);
+            expect(walletProvider.chains.luksoTestnet.id).toEqual(luksoTestnet.id);
         });
         it("sets the first provided custom chain as current chain", () => {
             walletProvider = new WalletProvider(pk, customChains);
 
-            expect(walletProvider.getCurrentChain().id).toEqual(lukso.id);
+            expect(walletProvider.getCurrentChain().id).toEqual(luksoTestnet.id);
         });
     });
     describe("Clients", () => {
@@ -54,56 +54,56 @@ describe("Wallet provider", () => {
             walletProvider = new WalletProvider(pk);
         });
         it("generates public client", () => {
-            const client = walletProvider.getPublicClient("lukso");
-            expect(client.chain.id).toEqual(lukso.id);
-            expect(client.transport.url).toEqual(lukso.rpcUrls.default.http[0]);
+            const client = walletProvider.getPublicClient("luksoTestnet");
+            expect(client.chain.id).toEqual(luksoTestnet.id);
+            expect(client.transport.url).toEqual(luksoTestnet.rpcUrls.default.http[0]);
         });
         it("generates public client with custom rpcurl", () => {
             const chain = WalletProvider.genChainFromName(
-                "lukso",
-                customRpcUrls.lukso
+                "luksoTestnet",
+                customRpcUrls.luksoTestnet
             );
-            const wp = new WalletProvider(pk, { ["lukso"]: chain });
+            const wp = new WalletProvider(pk, { ["luksoTestnet"]: chain });
 
-            const client = wp.getPublicClient("lukso");
-            expect(client.chain.id).toEqual(lukso.id);
+            const client = wp.getPublicClient("luksoTestnet");
+            expect(client.chain.id).toEqual(luksoTestnet.id);
             expect(client.chain.rpcUrls.default.http[0]).toEqual(
-                lukso.rpcUrls.default.http[0]
+                luksoTestnet.rpcUrls.default.http[0]
             );
             expect(client.chain.rpcUrls.custom.http[0]).toEqual(
-                customRpcUrls.lukso
+                customRpcUrls.luksoTestnet
             );
-            expect(client.transport.url).toEqual(customRpcUrls.lukso);
+            expect(client.transport.url).toEqual(customRpcUrls.luksoTestnet);
         });
         it("generates wallet client", () => {
             const account = privateKeyToAccount(pk);
             const expectedAddress = account.address;
 
-            const client = walletProvider.getWalletClient("lukso");
+            const client = walletProvider.getWalletClient("luksoTestnet");
 
             expect(client.account.address).toEqual(expectedAddress);
-            expect(client.transport.url).toEqual(lukso.rpcUrls.default.http[0]);
+            expect(client.transport.url).toEqual(luksoTestnet.rpcUrls.default.http[0]);
         });
         it("generates wallet client with custom rpcurl", () => {
             const account = privateKeyToAccount(pk);
             const expectedAddress = account.address;
             const chain = WalletProvider.genChainFromName(
-                "lukso",
-                customRpcUrls.lukso
+                "luksoTestnet",
+                customRpcUrls.luksoTestnet
             );
-            const wp = new WalletProvider(pk, { ["lukso"]: chain });
+            const wp = new WalletProvider(pk, { ["luksoTestnet"]: chain });
 
-            const client = wp.getWalletClient("lukso");
+            const client = wp.getWalletClient("luksoTestnet");
 
             expect(client.account.address).toEqual(expectedAddress);
-            expect(client.chain.id).toEqual(lukso.id);
+            expect(client.chain.id).toEqual(luksoTestnet.id);
             expect(client.chain.rpcUrls.default.http[0]).toEqual(
-                lukso.rpcUrls.default.http[0]
+                luksoTestnet.rpcUrls.default.http[0]
             );
             expect(client.chain.rpcUrls.custom.http[0]).toEqual(
-                customRpcUrls.lukso
+                customRpcUrls.luksoTestnet
             );
-            expect(client.transport.url).toEqual(customRpcUrls.lukso);
+            expect(client.transport.url).toEqual(customRpcUrls.luksoTestnet);
         });
     });
     describe("Balance", () => {
@@ -116,7 +116,7 @@ describe("Wallet provider", () => {
             expect(bal).toEqual("0");
         });
         it("should fetch balance for a specific added chain", async () => {
-            const bal = await walletProvider.getWalletBalanceForChain("lukso");
+            const bal = await walletProvider.getWalletBalanceForChain("luksoTestnet");
 
             expect(bal).toEqual("0");
         });
@@ -130,30 +130,30 @@ describe("Wallet provider", () => {
             walletProvider = new WalletProvider(pk, customChains);
         });
         it("generates chains from chain name", () => {
-            const chainName = "lukso";
+            const chainName = "luksoTestnet";
             const chain: Chain = WalletProvider.genChainFromName(chainName);
 
             expect(chain.rpcUrls.default.http[0]).toEqual(
-                lukso.rpcUrls.default.http[0]
+                luksoTestnet.rpcUrls.default.http[0]
             );
         });
         it("generates chains from chain name with custom rpc url", () => {
-            const chainName = "lukso";
-            const customRpcUrl = customRpcUrls.lukso;
+            const chainName = "luksoTestnet";
+            const customRpcUrl = customRpcUrls.luksoTestnet;
             const chain: Chain = WalletProvider.genChainFromName(
                 chainName,
                 customRpcUrl
             );
 
             expect(chain.rpcUrls.default.http[0]).toEqual(
-                lukso.rpcUrls.default.http[0]
+                luksoTestnet.rpcUrls.default.http[0]
             );
             expect(chain.rpcUrls.custom.http[0]).toEqual(customRpcUrl);
         });
         it("gets chain configs", () => {
-            const chain = walletProvider.getChainConfigs("lukso");
+            const chain = walletProvider.getChainConfigs("luksoTestnet");
 
-            expect(chain.id).toEqual(lukso.id);
+            expect(chain.id).toEqual(luksoTestnet.id);
         });
     });
 });

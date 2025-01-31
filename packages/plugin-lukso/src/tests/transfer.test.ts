@@ -44,7 +44,7 @@ describe("Transfer Action", () => {
         it("throws if not enough gas", async () => {
             await expect(
                 ta.transfer({
-                    fromChain: "lukso",
+                    fromChain: "luksoTestnet",
                     toAddress: receiverAddress,
                     amount: "1",
                 })
@@ -53,10 +53,10 @@ describe("Transfer Action", () => {
             );
         });
 
-        if (wp1) {
-            it("transfers tokens", async () => {
+        it("transfers tokens", async () => {
+            if (wp1) {
                 const tx = await ta1.transfer({
-                    fromChain: "arthera",
+                    fromChain: "luksoTestnet",
                     toAddress: receiverAddress,
                     amount: "0.001",
                 });
@@ -65,15 +65,15 @@ describe("Transfer Action", () => {
                 expect(tx.from).toEqual(wp1.getAddress());
                 expect(tx.to).toEqual(receiverAddress);
                 expect(tx.value).toEqual(1000000000000000n);
-            });
-        }
+            }
+        });
 
     });
 });
 
 const prepareChains = () => {
     const customChains: Record<string, Chain> = {};
-    const chainNames = ["lukso"];
+    const chainNames = ["luksoTestnet"];
     chainNames.forEach(
         (chain) =>
             (customChains[chain] = WalletProvider.genChainFromName(chain))

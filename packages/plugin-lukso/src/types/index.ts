@@ -55,7 +55,7 @@ export interface TransferParams {
 // Plugin configuration
 export interface LuksoPluginConfig {
     rpcUrl?: {
-        lukso?: string;
+        luksoTestnet?: string;
     };
     secrets?: {
         LUKSO_PRIVATE_KEY: string;

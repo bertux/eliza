@@ -76,7 +76,7 @@ The transfer action enables the transfer of tokens from one address to another o
 
 #### Example Usage
 
-Transfer 1 LYX to 0xRecipient on Lukso.
+Transfer 1 LYXT to 0xRecipient on Lukso.
 
 ## Contract Details
 

@@ -19,8 +19,8 @@ import * as viemChains from "viem/chains";
 import type { SupportedChain } from "../types";
 
 export class WalletProvider {
-    private currentChain: SupportedChain = "lukso";
-    chains: Record<string, Chain> = { lukso: viemChains.lukso };
+    private currentChain: SupportedChain = "luksoTestnet";
+    chains: Record<string, Chain> = { luksoTestnet: viemChains.luksoTestnet };
     account: PrivateKeyAccount;
 
     constructor(privateKey: `0x${string}`, chains?: Record<string, Chain>) {
@@ -130,7 +130,7 @@ export class WalletProvider {
         chainName: string,
         customRpcUrl?: string | null
     ): Chain {
-        const baseChain = viemChains[chainName] || viemChains.lukso;
+        const baseChain = viemChains[chainName] || viemChains.luksoTestnet;
 
         if (!baseChain?.id) {
             throw new Error(`Invalid chain name: ${chainName}`);
@@ -154,7 +154,7 @@ export class WalletProvider {
 const genChainsFromRuntime = (
     runtime: IAgentRuntime
 ): Record<string, Chain> => {
-    const chainNames = ["lukso"];
+    const chainNames = ["luksoTestnet"];
     const chains: Record<string, Chain> = {};
 
     chainNames.forEach((chainName) => {

@@ -5,10 +5,10 @@ export const transferTemplate = `Given the recent messages and wallet informatio
 {{walletInfo}}
 
 Extract the following information about the requested transfer:
-- Chain to execute on: Must be one of ["lukso", "base", ...] (like in viem/chains)
-- Amount to transfer: Must be a string representing the amount in LYX (only number without coin symbol, e.g., "0.1")
+- Chain to execute on: Must be one of ["luksoTestnet", "base", ...] (like in viem/chains)
+- Amount to transfer: Must be a string representing the amount in LYXT (only number without coin symbol, e.g., "0.1")
 - Recipient address: Must be a valid Lukso address starting with "0x"
-- Token symbol or address (if not native token): Optional, leave as null for LYX transfers
+- Token symbol or address (if not native token): Optional, leave as null for LYXT transfers
 
 Respond with a JSON markdown block containing only the extracted values. All fields except 'token' are required:
 
@@ -44,6 +44,6 @@ Given the recent messages, extract the following information about the requested
 - Name
 - Symbol
 - Token Owner (must be a valid address starting with "0x")
-- From Chain (must be one of ["lukso", "base", ...] like in viem/chains)
+- From Chain (must be one of ["luksoTestnet", "base", ...] like in viem/chains)
 
 Respond with a JSON markdown block containing only the extracted values.`;

@@ -8,7 +8,7 @@ import { transferAction } from "./actions/transfer";
 import { luksoWalletProvider } from "./providers/wallet";
 
 export const luksoPlugin: Plugin = {
-    name: "lukso",
+    name: "luksoTestnet",
     description: "Lukso blockchain integration plugin",
     providers: [luksoWalletProvider],
     evaluators: [],

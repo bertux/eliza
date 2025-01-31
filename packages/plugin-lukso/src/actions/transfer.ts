@@ -150,14 +150,14 @@ export const transferAction = {
             {
                 user: "{{user1}}",
                 content: {
-                    text: "Transfer 1 LYX to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                    text: "Transfer 1 LYXT to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
                     action: "SEND_TOKENS",
                 },
             },
             {
                 user: "{{agentName}}",
                 content: {
-                    text: "I'll help you transfer 1 LYX to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                    text: "I'll help you transfer 1 LYXT to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
                     action: "SEND_TOKENS",
                 },
             },
