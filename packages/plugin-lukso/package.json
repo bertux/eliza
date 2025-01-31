@@ -1,5 +1,5 @@
 {
-    "name": "@elizaos/plugin-fuse",
+    "name": "@elizaos/plugin-lukso",
     "version": "0.1.9-alpha.1",
     "main": "dist/index.js",
     "type": "module",

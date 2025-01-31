@@ -5,15 +5,15 @@ export * from "./types";
 import type { Plugin } from "@elizaos/core";
 import { createTokenAction } from "./actions/createToken";
 import { transferAction } from "./actions/transfer";
-import { fuseWalletProvider } from "./providers/wallet";
+import { luksoWalletProvider } from "./providers/wallet";
 
-export const fusePlugin: Plugin = {
-    name: "fuse",
-    description: "Fuse blockchain integration plugin",
-    providers: [fuseWalletProvider],
+export const luksoPlugin: Plugin = {
+    name: "lukso",
+    description: "Lukso blockchain integration plugin",
+    providers: [luksoWalletProvider],
     evaluators: [],
     services: [],
     actions: [createTokenAction, transferAction],
 };
 
-export default fusePlugin;
+export default luksoPlugin;

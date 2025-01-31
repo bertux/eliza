@@ -19,8 +19,8 @@ import * as viemChains from "viem/chains";
 import type { SupportedChain } from "../types";
 
 export class WalletProvider {
-    private currentChain: SupportedChain = "fuse";
-    chains: Record<string, Chain> = { fuse: viemChains.fuse };
+    private currentChain: SupportedChain = "lukso";
+    chains: Record<string, Chain> = { lukso: viemChains.lukso };
     account: PrivateKeyAccount;
 
     constructor(privateKey: `0x${string}`, chains?: Record<string, Chain>) {
@@ -130,7 +130,7 @@ export class WalletProvider {
         chainName: string,
         customRpcUrl?: string | null
     ): Chain {
-        const baseChain = viemChains[chainName] || viemChains.fuse;
+        const baseChain = viemChains[chainName] || viemChains.lukso;
 
         if (!baseChain?.id) {
             throw new Error(`Invalid chain name: ${chainName}`);
@@ -138,14 +138,14 @@ export class WalletProvider {
 
         const viemChain: Chain = customRpcUrl
             ? {
-                  ...baseChain,
-                  rpcUrls: {
-                      ...baseChain.rpcUrls,
-                      custom: {
-                          http: [customRpcUrl],
-                      },
-                  },
-              }
+                ...baseChain,
+                rpcUrls: {
+                    ...baseChain.rpcUrls,
+                    custom: {
+                        http: [customRpcUrl],
+                    },
+                },
+            }
             : baseChain;
         return viemChain;
     }
@@ -154,7 +154,7 @@ export class WalletProvider {
 const genChainsFromRuntime = (
     runtime: IAgentRuntime
 ): Record<string, Chain> => {
-    const chainNames = ["fuse"];
+    const chainNames = ["lukso"];
     const chains: Record<string, Chain> = {};
 
     chainNames.forEach((chainName) => {
@@ -168,16 +168,16 @@ const genChainsFromRuntime = (
 };
 
 export const initWalletProvider = (runtime: IAgentRuntime) => {
-    const privateKey = runtime.getSetting("FUSE_PRIVATE_KEY");
+    const privateKey = runtime.getSetting("LUKSO_PRIVATE_KEY");
     if (!privateKey) {
-        throw new Error("FUSE_PRIVATE_KEY is missing");
+        throw new Error("LUKSO_PRIVATE_KEY is missing");
     }
 
     const chains = genChainsFromRuntime(runtime);
     return new WalletProvider(privateKey as `0x${string}`, chains);
 };
 
-export const fuseWalletProvider: Provider = {
+export const luksoWalletProvider: Provider = {
     async get(
         runtime: IAgentRuntime,
         _message: Memory,
@@ -188,9 +188,9 @@ export const fuseWalletProvider: Provider = {
             const address = walletProvider.getAddress();
             const balance = await walletProvider.getWalletBalance();
             const chain = walletProvider.getCurrentChain();
-            return `Fuse Wallet Address: ${address}\nBalance: ${balance} ${chain.nativeCurrency.symbol}\nChain ID: ${chain.id}, Name: ${chain.name}`;
+            return `Lukso Wallet Address: ${address}\nBalance: ${balance} ${chain.nativeCurrency.symbol}\nChain ID: ${chain.id}, Name: ${chain.name}`;
         } catch (error) {
-            console.error("Error in Fuse wallet provider:", error);
+            console.error("Error in Lukso wallet provider:", error);
             return null;
         }
     },

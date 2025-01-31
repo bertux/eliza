@@ -1,15 +1,15 @@
-# `@elizaos/plugin-fuse`
+# `@elizaos/plugin-lukso`
 
-This plugin provides actions and providers for interacting with the **Fuse** blockchain.
+This plugin provides actions and providers for interacting with the **Lukso** blockchain.
 
 ## Configuration
 
 ### Default Setup
 
-By default, **Fuse** is enabled. To use it, simply add your private key to the .env file:
+By default, **Lukso** is enabled. To use it, simply add your private key to the .env file:
 
 ```
-FUSE_PRIVATE_KEY=your-private-key-here
+LUKSO_PRIVATE_KEY=your-private-key-here
 ```
 
 ### Custom RPC URLs
@@ -21,19 +21,21 @@ ETHEREUM_PROVIDER_<CHAIN_NAME>=https://your-custom-rpc-url
 ```
 
 **Example:**
+
 ```
-ETHEREUM_PROVIDER_FUSE=https://rpc.fuse.io
+ETHEREUM_PROVIDER_LUKSO=https://rpc.lukso.io
 ```
 
 ## Providers
 
-The **Wallet Provider** initializes with Fuse and:
-* Provides the **context** of the currently connected address and its balance
-* Creates **Public** and **Wallet clients** to interact with the supported chain
+The **Wallet Provider** initializes with Lukso and:
+
+- Provides the **context** of the currently connected address and its balance
+- Creates **Public** and **Wallet clients** to interact with the supported chain
 
 ## Actions
 
-The createToken and transfer actions are independent and serve different purposes. createToken is used for deploying ERC20 tokens, while transfer facilitates token transfers between addresses on the Fuse blockchain.
+The createToken and transfer actions are independent and serve different purposes. createToken is used for deploying ERC20 tokens, while transfer facilitates token transfers between addresses on the Lukso blockchain.
 
 ### CreateToken (Token Deployment)
 
@@ -43,38 +45,38 @@ The createToken action allows users to deploy an ERC20 token using the **ERC20Fa
 
 A user request to create a token:
 
-Create a token named MyToken with the symbol MTK with Token owner 0x1234567890abcdef1234567890abcdef12345678 on Fuse.
+Create a token named MyToken with the symbol MTK with Token owner 0x1234567890abcdef1234567890abcdef12345678 on Lukso.
 
 This translates to the following JSON payload:
 
 ```json
 {
-  "name": "MyToken",
-  "symbol": "MTK",
-  "tokenOwner": "0x1234567890abcdef1234567890abcdef12345678",
-  "fromChain": "fuse"
+    "name": "MyToken",
+    "symbol": "MTK",
+    "tokenOwner": "0x1234567890abcdef1234567890abcdef12345678",
+    "fromChain": "lukso"
 }
 ```
 
 #### Features
 
-* Uses the ERC20Factory contract
-* Deploys a new ERC20 token
-* Returns in the event the token contract address after deployment
+- Uses the ERC20Factory contract
+- Deploys a new ERC20 token
+- Returns in the event the token contract address after deployment
 
 ### Transfer
 
-The transfer action enables the transfer of tokens from one address to another on the **Fuse** blockchain.
+The transfer action enables the transfer of tokens from one address to another on the **Lukso** blockchain.
 
 #### Parameters
 
-* **Amount**
-* **Chain**
-* **Recipient Address**
+- **Amount**
+- **Chain**
+- **Recipient Address**
 
 #### Example Usage
 
-Transfer 1 FUSE to 0xRecipient on Fuse.
+Transfer 1 LYX to 0xRecipient on Lukso.
 
 ## Contract Details
 
@@ -83,19 +85,21 @@ Transfer 1 FUSE to 0xRecipient on Fuse.
 The createToken action interacts with the **ERC20Factory** contract to deploy ERC20 tokens.
 
 #### ERC20Factory.sol
-* Deploys new ERC20 tokens
-* Emits a TokenCreated event
-* Allows querying the number of created tokens
+
+- Deploys new ERC20 tokens
+- Emits a TokenCreated event
+- Allows querying the number of created tokens
 
 #### CustomToken.sol
-* ERC20 token with an initial supply minted to the token owner
-* Implements OpenZeppelin's **ERC20** and **Ownable** modules
+
+- ERC20 token with an initial supply minted to the token owner
+- Implements OpenZeppelin's **ERC20** and **Ownable** modules
 
 ## Running Tests
 
 This plugin includes a test suite using **vitest** to ensure reliability and functionality. The tests cover core features with unit tests, including token creation via createToken and token transfers via transfer.
 
-Navigate to the plugin-fuse directory and run:
+Navigate to the plugin-lukso directory and run:
 
 ```bash
 pnpm test
@@ -103,8 +107,8 @@ pnpm test
 
 ## Contribution
 
-* All new features should be covered with tests
-* Follow best practices and ensure the code passes linting with:
+- All new features should be covered with tests
+- Follow best practices and ensure the code passes linting with:
 
 ```bash
 pnpm lint

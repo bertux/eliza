@@ -53,12 +53,12 @@ export interface TransferParams {
 }
 
 // Plugin configuration
-export interface FusePluginConfig {
+export interface LuksoPluginConfig {
     rpcUrl?: {
-        fuse?: string;
+        lukso?: string;
     };
     secrets?: {
-        FUSE_PRIVATE_KEY: string;
+        LUKSO_PRIVATE_KEY: string;
     };
     testMode?: boolean;
     multicall?: {

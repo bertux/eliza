@@ -91,9 +91,9 @@ const buildCreateTokenDetails = async (
     if (!existingChain) {
         throw new Error(
             "The chain " +
-                createTokenDetails.fromChain +
-                " not configured yet. Add the chain or choose one from configured: " +
-                chains.toString()
+            createTokenDetails.fromChain +
+            " not configured yet. Add the chain or choose one from configured: " +
+            chains.toString()
         );
     }
 
@@ -114,7 +114,7 @@ export const createTokenAction = {
 
         try {
             const privateKey = runtime.getSetting(
-                "FUSE_PRIVATE_KEY"
+                "LUKSO_PRIVATE_KEY"
             ) as `0x${string}`;
             const walletProvider = new WalletProvider(privateKey);
             const action = new CreateTokenAction(walletProvider);
@@ -148,7 +148,7 @@ export const createTokenAction = {
     },
     template: createTokenTemplate,
     validate: async (runtime: IAgentRuntime) => {
-        const privateKey = runtime.getSetting("FUSE_PRIVATE_KEY");
+        const privateKey = runtime.getSetting("LUKSO_PRIVATE_KEY");
         return typeof privateKey === "string" && privateKey.startsWith("0x");
     },
     examples: [
@@ -156,7 +156,7 @@ export const createTokenAction = {
             {
                 user: "user",
                 content: {
-                    text: "Create a token named 'MyToken' with symbol 'MTK' on Fuse.",
+                    text: "Create a token named 'MyToken' with symbol 'MTK' on Lukso.",
                     action: "CREATE_TOKEN",
                 },
             },

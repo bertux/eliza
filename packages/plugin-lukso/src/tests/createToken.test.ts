@@ -12,7 +12,7 @@ describe("Create Token Action", () => {
 
     beforeEach(async () => {
         const pk = generatePrivateKey();
-        const pk1 = getEnvVariable("FUSE_PRIVATE_KEY") as `0x${string}`;
+        const pk1 = getEnvVariable("LUKSO_PRIVATE_KEY") as `0x${string}`;
         const customChains = prepareChains();
         wp = new WalletProvider(pk, customChains);
         if (pk1) {
@@ -44,7 +44,7 @@ describe("Create Token Action", () => {
         it("throws if not enough gas", async () => {
             await expect(
                 cta.create({
-                    fromChain: "fuse",
+                    fromChain: "lukso",
                     tokenOwner: receiverAddress,
                     symbol: "TT",
                     name: "Test Token",
@@ -55,7 +55,7 @@ describe("Create Token Action", () => {
         it("creates token", async () => {
             if (wp1) {
                 const tx = await cta1.create({
-                    fromChain: "fuse",
+                    fromChain: "lukso",
                     tokenOwner: receiverAddress,
                     symbol: "TTT",
                     name: "Toto Token Test",
@@ -72,7 +72,7 @@ describe("Create Token Action", () => {
 
 const prepareChains = () => {
     const customChains: Record<string, Chain> = {};
-    const chainNames = ["fuse"];
+    const chainNames = ["lukso"];
     chainNames.forEach(
         (chain) =>
             (customChains[chain] = WalletProvider.genChainFromName(chain))

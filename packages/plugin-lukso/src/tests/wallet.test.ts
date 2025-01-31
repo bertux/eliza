@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
-import { fuse, Chain } from "viem/chains";
+import { lukso, Chain } from "viem/chains";
 
 import { WalletProvider } from "../providers/wallet";
 
 const customRpcUrls = {
-    fuse: "custom-rpc.fuse.io",
+    lukso: "custom-rpc.lukso.io",
 };
 
 describe("Wallet provider", () => {
@@ -16,7 +16,7 @@ describe("Wallet provider", () => {
     beforeAll(() => {
         pk = generatePrivateKey();
 
-        const chainNames = ["fuse"];
+        const chainNames = ["lukso"];
         chainNames.forEach(
             (chain) =>
                 (customChains[chain] = WalletProvider.genChainFromName(chain))
@@ -32,21 +32,21 @@ describe("Wallet provider", () => {
 
             expect(walletProvider.getAddress()).toEqual(expectedAddress);
         });
-        it("sets default chain to fuse", () => {
+        it("sets default chain to lukso", () => {
             walletProvider = new WalletProvider(pk);
 
-            expect(walletProvider.chains.fuse.id).toEqual(fuse.id);
-            expect(walletProvider.getCurrentChain().id).toEqual(fuse.id);
+            expect(walletProvider.chains.lukso.id).toEqual(lukso.id);
+            expect(walletProvider.getCurrentChain().id).toEqual(lukso.id);
         });
         it("sets custom chains", () => {
             walletProvider = new WalletProvider(pk, customChains);
 
-            expect(walletProvider.chains.fuse.id).toEqual(fuse.id);
+            expect(walletProvider.chains.lukso.id).toEqual(lukso.id);
         });
         it("sets the first provided custom chain as current chain", () => {
             walletProvider = new WalletProvider(pk, customChains);
 
-            expect(walletProvider.getCurrentChain().id).toEqual(fuse.id);
+            expect(walletProvider.getCurrentChain().id).toEqual(lukso.id);
         });
     });
     describe("Clients", () => {
@@ -54,56 +54,56 @@ describe("Wallet provider", () => {
             walletProvider = new WalletProvider(pk);
         });
         it("generates public client", () => {
-            const client = walletProvider.getPublicClient("fuse");
-            expect(client.chain.id).toEqual(fuse.id);
-            expect(client.transport.url).toEqual(fuse.rpcUrls.default.http[0]);
+            const client = walletProvider.getPublicClient("lukso");
+            expect(client.chain.id).toEqual(lukso.id);
+            expect(client.transport.url).toEqual(lukso.rpcUrls.default.http[0]);
         });
         it("generates public client with custom rpcurl", () => {
             const chain = WalletProvider.genChainFromName(
-                "fuse",
-                customRpcUrls.fuse
+                "lukso",
+                customRpcUrls.lukso
             );
-            const wp = new WalletProvider(pk, { ["fuse"]: chain });
+            const wp = new WalletProvider(pk, { ["lukso"]: chain });
 
-            const client = wp.getPublicClient("fuse");
-            expect(client.chain.id).toEqual(fuse.id);
+            const client = wp.getPublicClient("lukso");
+            expect(client.chain.id).toEqual(lukso.id);
             expect(client.chain.rpcUrls.default.http[0]).toEqual(
-                fuse.rpcUrls.default.http[0]
+                lukso.rpcUrls.default.http[0]
             );
             expect(client.chain.rpcUrls.custom.http[0]).toEqual(
-                customRpcUrls.fuse
+                customRpcUrls.lukso
             );
-            expect(client.transport.url).toEqual(customRpcUrls.fuse);
+            expect(client.transport.url).toEqual(customRpcUrls.lukso);
         });
         it("generates wallet client", () => {
             const account = privateKeyToAccount(pk);
             const expectedAddress = account.address;
 
-            const client = walletProvider.getWalletClient("fuse");
+            const client = walletProvider.getWalletClient("lukso");
 
             expect(client.account.address).toEqual(expectedAddress);
-            expect(client.transport.url).toEqual(fuse.rpcUrls.default.http[0]);
+            expect(client.transport.url).toEqual(lukso.rpcUrls.default.http[0]);
         });
         it("generates wallet client with custom rpcurl", () => {
             const account = privateKeyToAccount(pk);
             const expectedAddress = account.address;
             const chain = WalletProvider.genChainFromName(
-                "fuse",
-                customRpcUrls.fuse
+                "lukso",
+                customRpcUrls.lukso
             );
-            const wp = new WalletProvider(pk, { ["fuse"]: chain });
+            const wp = new WalletProvider(pk, { ["lukso"]: chain });
 
-            const client = wp.getWalletClient("fuse");
+            const client = wp.getWalletClient("lukso");
 
             expect(client.account.address).toEqual(expectedAddress);
-            expect(client.chain.id).toEqual(fuse.id);
+            expect(client.chain.id).toEqual(lukso.id);
             expect(client.chain.rpcUrls.default.http[0]).toEqual(
-                fuse.rpcUrls.default.http[0]
+                lukso.rpcUrls.default.http[0]
             );
             expect(client.chain.rpcUrls.custom.http[0]).toEqual(
-                customRpcUrls.fuse
+                customRpcUrls.lukso
             );
-            expect(client.transport.url).toEqual(customRpcUrls.fuse);
+            expect(client.transport.url).toEqual(customRpcUrls.lukso);
         });
     });
     describe("Balance", () => {
@@ -116,7 +116,7 @@ describe("Wallet provider", () => {
             expect(bal).toEqual("0");
         });
         it("should fetch balance for a specific added chain", async () => {
-            const bal = await walletProvider.getWalletBalanceForChain("fuse");
+            const bal = await walletProvider.getWalletBalanceForChain("lukso");
 
             expect(bal).toEqual("0");
         });
@@ -130,30 +130,30 @@ describe("Wallet provider", () => {
             walletProvider = new WalletProvider(pk, customChains);
         });
         it("generates chains from chain name", () => {
-            const chainName = "fuse";
+            const chainName = "lukso";
             const chain: Chain = WalletProvider.genChainFromName(chainName);
 
             expect(chain.rpcUrls.default.http[0]).toEqual(
-                fuse.rpcUrls.default.http[0]
+                lukso.rpcUrls.default.http[0]
             );
         });
         it("generates chains from chain name with custom rpc url", () => {
-            const chainName = "fuse";
-            const customRpcUrl = customRpcUrls.fuse;
+            const chainName = "lukso";
+            const customRpcUrl = customRpcUrls.lukso;
             const chain: Chain = WalletProvider.genChainFromName(
                 chainName,
                 customRpcUrl
             );
 
             expect(chain.rpcUrls.default.http[0]).toEqual(
-                fuse.rpcUrls.default.http[0]
+                lukso.rpcUrls.default.http[0]
             );
             expect(chain.rpcUrls.custom.http[0]).toEqual(customRpcUrl);
         });
         it("gets chain configs", () => {
-            const chain = walletProvider.getChainConfigs("fuse");
+            const chain = walletProvider.getChainConfigs("lukso");
 
-            expect(chain.id).toEqual(fuse.id);
+            expect(chain.id).toEqual(lukso.id);
         });
     });
 });

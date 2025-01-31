@@ -18,7 +18,7 @@ export { transferTemplate };
 
 // Exported for tests
 export class TransferAction {
-    constructor(private walletProvider: WalletProvider) {}
+    constructor(private walletProvider: WalletProvider) { }
 
     async transfer(params: TransferParams): Promise<Transaction> {
         const walletClient = this.walletProvider.getWalletClient(
@@ -84,9 +84,9 @@ const buildTransferDetails = async (
     if (!existingChain) {
         throw new Error(
             "The chain " +
-                transferDetails.fromChain +
-                " not configured yet. Add the chain or choose one from configured: " +
-                chains.toString()
+            transferDetails.fromChain +
+            " not configured yet. Add the chain or choose one from configured: " +
+            chains.toString()
         );
     }
 
@@ -142,22 +142,22 @@ export const transferAction = {
     },
     template: transferTemplate,
     validate: async (runtime: IAgentRuntime) => {
-        const privateKey = runtime.getSetting("FUSE_PRIVATE_KEY");
+        const privateKey = runtime.getSetting("LUKSO_PRIVATE_KEY");
         return typeof privateKey === "string" && privateKey.startsWith("0x");
     },
     examples: [
         [
             {
-                user: "assistant",
+                user: "{{user1}}",
                 content: {
-                    text: "I'll help you transfer 1 FUSE to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                    text: "Transfer 1 LYX to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
                     action: "SEND_TOKENS",
                 },
             },
             {
-                user: "user",
+                user: "{{agentName}}",
                 content: {
-                    text: "Transfer 1 FUSE to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                    text: "I'll help you transfer 1 LYX to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
                     action: "SEND_TOKENS",
                 },
             },
