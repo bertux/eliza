@@ -53,10 +53,10 @@ describe("Transfer Action", () => {
             );
         });
 
-        if (wp1) {
-            it("transfers tokens", async () => {
+        it("transfers tokens", async () => {
+            if (wp1) {
                 const tx = await ta1.transfer({
-                    fromChain: "arthera",
+                    fromChain: "lukso",
                     toAddress: receiverAddress,
                     amount: "0.001",
                 });
@@ -65,8 +65,8 @@ describe("Transfer Action", () => {
                 expect(tx.from).toEqual(wp1.getAddress());
                 expect(tx.to).toEqual(receiverAddress);
                 expect(tx.value).toEqual(1000000000000000n);
-            });
-        }
+            }
+        });
 
     });
 });
