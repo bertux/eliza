@@ -102,7 +102,7 @@ const buildCreateTokenDetails = async (
 };
 
 export const createTokenAction = {
-    name: "create",
+    name: "CREATE_ERC20_TOKEN",
     description: "Deploy a new ERC20 token using the ERC20Factory.",
     handler: async (
         runtime: IAgentRuntime,
@@ -111,7 +111,7 @@ export const createTokenAction = {
         options: Record<string, unknown>,
         callback?: HandlerCallback
     ) => {
-        elizaLogger.log("Starting CREATE_TOKEN handler...");
+        elizaLogger.log("Starting CREATE_ERC20_TOKEN handler...");
 
         try {
             const privateKey = runtime.getSetting(
@@ -164,7 +164,7 @@ export const createTokenAction = {
                 user: "{{agentName}}",
                 content: {
                     text: "I'll deploy your new token now.",
-                    action: "DEPLOY_TOKEN",
+                    action: "CREATE_ERC20_TOKEN",
                 },
             },
             {
@@ -185,7 +185,7 @@ export const createTokenAction = {
                 user: "{{agentName}}",
                 content: {
                     text: "I'll deploy your token.",
-                    action: "DEPLOY_TOKEN",
+                    action: "CREATE_ERC20_TOKEN",
                 },
             },
             {
@@ -197,5 +197,5 @@ export const createTokenAction = {
         ],
     ] as ActionExample[][],
 
-    similes: ["CREATE_TOKEN", "DEPLOY_TOKEN"],
+    similes: ["CREATE_ERC20_TOKEN", "DEPLOY_TOKEN"],
 };
