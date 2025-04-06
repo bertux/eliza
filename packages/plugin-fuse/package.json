@@ -16,7 +16,7 @@
         "build": "tsup --format esm --dts",
         "dev": "tsup --format esm --dts --watch",
         "test": "vitest run",
-        "publish": "pnpm publish --access public --publish-branch plugin-fuse-publish",
+        "release": "pnpm publish --access public --publish-branch plugin-fuse-publish",
         "lint": "eslint --fix  --cache ."
     },
     "devDependencies": {
